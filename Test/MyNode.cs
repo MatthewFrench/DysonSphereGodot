@@ -89,8 +89,8 @@ public class MyNode : Node
         var sphereCenterPoint = new Vector3(0f, 0f, 0f);
 
         Spatial groundTest = (Spatial)groundTestScene.Instance();
-        groundTest.LookAtFromPosition(tileCenterPoint, sphereCenterPoint, new Vector3(0f, 1f, 0f));
-        //Add ground to world
+        groundTest.LookAtFromPosition(tileCenterPoint, sphereCenterPoint, new Vector3(0f, -1f, 0f));
+		//Add ground to world
         this.AddChild(groundTest);
 
 
