@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Hexagon.obj-29fb87b8e1ac2319078a7de30eb17334.mesh"
+
+[deps]
+
+files=[ "res://.import/Hexagon.obj-29fb87b8e1ac2319078a7de30eb17334.mesh" ]
+
+source_file="res://Hexagon.obj"
+source_md5="e25fc3c3c113e78e2112c13a3098050e"
+
+dest_files=[ "res://.import/Hexagon.obj-29fb87b8e1ac2319078a7de30eb17334.mesh", "res://.import/Hexagon.obj-29fb87b8e1ac2319078a7de30eb17334.mesh" ]
+dest_md5="0176b338117a3ed102be35753382911c"
+
+[params]
+
+generate_tangents=true

@@ -9,25 +9,28 @@ public class MyNode : Node
     // private int a = 2;
     // private string b = "textvar";
 
+    private bool Show_Hex_Mesh = false;
+
     public override void _Ready()
     {
         // Called every time the node is added to the scene.
         // Initialization here
         GD.Print("Hello from the Node CS Script Init");
 
-        float radius = 6;
+        float radius = 1000;
         float scale = radius;
         int subdivisionCount = 3;
 
-        Hexasphere h = new Hexasphere((decimal)radius, subdivisionCount, 0.95);
+        Hexasphere h = new Hexasphere((decimal)radius, subdivisionCount, 1);
 
         GD.Print("Number of Tiles: " + h.GetTiles().Count);
         var meshInstance = (PackedScene)ResourceLoader.Load("res://MeshInstance.tscn");
         var sphereMeshScene = (PackedScene)ResourceLoader.Load("res://SphereMesh.tscn");
-        var groundTestScene = (PackedScene)ResourceLoader.Load("res://Ground Test.tscn");
+        var hexagonTestScene = (PackedScene)ResourceLoader.Load("res://Hexagon Test.tscn");
+        var pentagonTestScene = (PackedScene)ResourceLoader.Load("res://Pentagon Test.tscn");
         foreach (var tile in h.GetTiles()) {
             //CreateInstanceForTile(tile, meshInstance, scale, radius);
-            CreateMesh(tile, sphereMeshScene, h.GetTiles().Count, radius, groundTestScene);
+            CreateMesh(tile, sphereMeshScene, h.GetTiles().Count, radius, hexagonTestScene, pentagonTestScene);
         }
 		
 		/*
@@ -52,7 +55,7 @@ public class MyNode : Node
         this.AddChild(mesh);
     }
 
-    public void CreateMesh(Tile tile, PackedScene sphereMeshScene, int numberOfTiles, float radius, PackedScene groundTestScene) {
+    public void CreateMesh(Tile tile, PackedScene sphereMeshScene, int numberOfTiles, float radius, PackedScene hexagonTestScene, PackedScene pentagonTestScene) {
         var surfTool = new SurfaceTool();
         var mesh = new ArrayMesh();
         var material = new SpatialMaterial();
@@ -62,64 +65,84 @@ public class MyNode : Node
         decimal tileCenterX = 0;
         decimal tileCenterY = 0;
         decimal tileCenterZ = 0;
+        decimal polygonRadius = 0;
 
         List<Point> points = tile.boundary;
+        var lastPoint = points[points.Count - 1];
+        Vector3 lastPointVector = new Vector3((float)lastPoint.x, (float)lastPoint.y, (float)lastPoint.z);
+        decimal polygonSideLength = 0;
         foreach (Point point in points) {
-            surfTool.AddUv(new Vector2(0, 0));
-            surfTool.AddVertex(new Vector3((float)point.x, (float)point.y, (float)point.z));
+            if (Show_Hex_Mesh) {
+                surfTool.AddUv(new Vector2(0, 0));
+                surfTool.AddVertex(new Vector3((float)point.x, (float)point.y, (float)point.z));
+            }
             tileCenterX += point.x / points.Count;
             tileCenterY += point.y / points.Count;
             tileCenterZ += point.z / points.Count;
+            Vector3 currentVector = new Vector3((float)point.x, (float)point.y, (float)point.z); 
+            polygonSideLength += (decimal)currentVector.DistanceTo(lastPointVector);
+            lastPointVector = currentVector;
         }
+        polygonSideLength = polygonSideLength / points.Count;
 
         var tileCenterPoint = new Vector3((float)tileCenterX, (float)tileCenterY, (float)tileCenterZ);
         var firstPoint = new Vector3((float)points[0].x, (float)points[0].y, (float)points[0].z);
 
-        var polygonRadius = tileCenterPoint.DistanceTo(firstPoint);
+        foreach (Point point in points)
+        {
+            var vector = new Vector3((float) point.x, (float)point.y, (float)point.z);
+            polygonRadius += (decimal)vector.DistanceTo(tileCenterPoint);
+        }
+        polygonRadius = polygonRadius / points.Count;
+
+
+        var sphereCenterPoint = new Vector3(0f, 0f, 0f);
+
+        if (points.Count == 5) {
+            GD.Print("Pentagon Radius: " + polygonRadius + ", side length: " + polygonSideLength);
+
+            //Create instance
+            Spatial groundTest = (Spatial)pentagonTestScene.Instance();
+            //Put the instance on the tile and make it face the center of the sphere
+            //This should be all that is needed but the sections are rotated perpendicular
+            groundTest.LookAtFromPosition(tileCenterPoint, sphereCenterPoint, new Vector3(0f, 1f, 0f));
+            //Get the local axis of the instance
+            var axis = groundTest.GetTransform().basis.Xform(new Vector3(-1, 0, 0)).Normalized();
+            //Rotate it to face the center (I have no idea why this is necessary)
+            groundTest.Rotate(axis, (float)(Math.PI / 2.0));
+            //Scale the ground to match the size of the tile
+            //groundTest.SetTransform(groundTest.GetTransform().Scaled(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2)));
+            //groundTest.SetScale(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2));
+            //Add ground to world
+            this.AddChild(groundTest);
+        } else if (points.Count == 6) {
+            GD.Print("Hexagon Radius: " + polygonRadius + ", side length: " + polygonSideLength);
+
+            //Create instance
+            Spatial groundTest = (Spatial)hexagonTestScene.Instance();
+            //Put the instance on the tile and make it face the center of the sphere
+            //This should be all that is needed but the sections are rotated perpendicular
+            groundTest.LookAtFromPosition(tileCenterPoint, sphereCenterPoint, new Vector3(0f, 1f, 0f));
+            //Get the local axis of the instance
+            var axis = groundTest.GetTransform().basis.Xform(new Vector3(-1, 0, 0)).Normalized();
+            //Rotate it to face the center (I have no idea why this is necessary)
+            groundTest.Rotate(axis, (float)(Math.PI / 2.0));
+            //Scale the ground to match the size of the tile
+            //groundTest.SetTransform(groundTest.GetTransform().Scaled(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2)));
+            //groundTest.SetScale(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2));
+            //Add ground to world
+            this.AddChild(groundTest);
+        } else {
+            GD.Print("Unknown Radius: " + polygonRadius + ", Count: " + points.Count + ", Side Length: " + polygonSideLength);
+        }
 
         var sphereScale = radius / numberOfTiles;
-
-
         MeshInstance sphere = (MeshInstance)sphereMeshScene.Instance();
         sphere.SetTranslation(tileCenterPoint);
         sphere.SetScale(new Vector3(sphereScale, sphereScale, sphereScale));
         this.AddChild(sphere);
 
-        
-        var sphereCenterPoint = new Vector3(0f, 0f, 0f);
 
-        Spatial groundTest = (Spatial)groundTestScene.Instance();
-        groundTest.LookAtFromPosition(tileCenterPoint, sphereCenterPoint, new Vector3(0f, -1f, 0f));
-		//Add ground to world
-        this.AddChild(groundTest);
-
-
-        //Scale ground to fit polygon size
-        //groundTest.SetScale(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2));
-        //Move it to the center of the tile
-        //groundTest.SetTranslation(tileCenterPoint);
-        //Rotate it to face the center (0,0,0)
-        //groundTest.LookAt(sphereCenterPoint, new Vector3(0f, 1f, 0f));
-
-        /*
-        groundTest.SetTransform(
-            groundTest.GetTransform()
-                //.Scaled(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2))
-                .Rotated(tileCenterPoint.Normalized(), tileCenterPoint.AngleTo(sphereCenterPoint))
-            //.Translated(tileCenterPoint)
-        );
-        */
-        //groundTest.SetScale(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2));
-        //groundTest.RotateZ(50);
-        //groundTest.Translate(tileCenterPoint);
-        //groundTest.S(new Vector3(polygonRadius * 2, 1.0f, polygonRadius * 2));
-        //groundTest.RotateX((float)Math.PI);
-
-        //groundTest.LookAt(tileCenterPoint, new Vector3(0f, 1f, 0f));
-        //groundTest.Rotate(tileCenterPoint.Normalized(), tileCenterPoint.AngleTo(sphereCenterPoint));
-        //groundTest.LookAtFromPosition(tileCenterPoint, sphereCenterPoint, new Vector3(0f, 1f, 0f));
-        //groundTest.Translate(tileCenterPoint);
-        //groundTest.SetTranslation(tileCenterPoint);
 
         surfTool.GenerateNormals();
         surfTool.Index();

@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Pentagon.obj-725595a832c1356083e9d1b2a5b13fac.mesh"
+
+[deps]
+
+files=[ "res://.import/Pentagon.obj-725595a832c1356083e9d1b2a5b13fac.mesh" ]
+
+source_file="res://Pentagon.obj"
+source_md5="20bea0e29be188639768330672f7f044"
+
+dest_files=[ "res://.import/Pentagon.obj-725595a832c1356083e9d1b2a5b13fac.mesh", "res://.import/Pentagon.obj-725595a832c1356083e9d1b2a5b13fac.mesh" ]
+dest_md5="b5119f57fc3ff15e96eef26ba2c55f83"
+
+[params]
+
+generate_tangents=true

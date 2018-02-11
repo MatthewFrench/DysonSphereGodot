@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Hexagon.obj" type="ArrayMesh" id=1]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -72,6 +74,10 @@ subdivide_width = 0
 subdivide_height = 0
 subdivide_depth = 0
 
+[sub_resource type="ConvexPolygonShape" id=5]
+
+points = PoolVector3Array( 0, 1, -232.875, 0, -1, -232.875, 201.75, 1, -116.438, 201.75, -1, -116.438, 201.75, 1, -116.438, 201.75, -1, -116.438, 201.75, 1, 116.438, 201.75, -1, 116.438, 201.75, 1, 116.438, 201.75, -1, 116.438, 0, 1, 232.875, 0, -1, 232.875, 0, 1, 232.875, 0, -1, 232.875, -201.75, 1, 116.438, -201.75, -1, 116.438, 0, 1, -232.875, 201.75, 1, -116.438, -201.75, 1, -116.438, -201.75, 1, 116.438, 0, 1, 232.875, 201.75, 1, 116.438, -201.75, 1, 116.438, -201.75, -1, 116.438, -201.75, 1, -116.438, -201.75, -1, -116.438, -201.75, 1, -116.438, -201.75, -1, -116.438, 0, 1, -232.875, 0, -1, -232.875, 201.75, -1, -116.438, 0, -1, -232.875, 201.75, -1, 116.438, 0, -1, 232.875, -201.75, -1, 116.438, -201.75, -1, -116.438 )
+
 [node name="Spatial" type="Spatial"]
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="0"]
@@ -122,5 +128,37 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 4 )
 skeleton = NodePath("..")
 material/0 = null
+
+[node name="MeshInstance3" type="MeshInstance" parent="." index="2"]
+
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = ExtResource( 1 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "Geometry" ]
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance3" index="0"]
+
+input_ray_pickable = true
+input_capture_on_drag = false
+collision_layer = 1
+collision_mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance3/StaticBody" index="0"]
+
+shape = SubResource( 5 )
+disabled = false
 
 
