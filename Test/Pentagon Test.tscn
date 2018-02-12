@@ -1,8 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Pentagon.obj" type="ArrayMesh" id=1]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="ConvexPolygonShape" id=5]
+
+points = PoolVector3Array( -0.304443, 1.91699, -186.125, -0.304443, -0.0826416, -186.125, 175.75, 1.91699, -58.1875, 175.75, -0.0826416, -58.1875, 175.75, 1.91699, -58.1875, 175.75, -0.0826416, -58.1875, 108.5, 1.91699, 148.75, 108.5, -0.0826416, 148.75, 108.5, 1.91699, 148.75, 108.5, -0.0826416, 148.75, -109.125, 1.91699, 148.75, -109.125, -0.0826416, 148.75, -0.304443, 1.91699, -186.125, 175.75, 1.91699, -58.1875, -176.375, 1.91699, -58.1875, -109.125, 1.91699, 148.75, 108.5, 1.91699, 148.75, -109.125, 1.91699, 148.75, -109.125, -0.0826416, 148.75, -176.375, 1.91699, -58.1875, -176.375, -0.0826416, -58.1875, -176.375, 1.91699, -58.1875, -176.375, -0.0826416, -58.1875, -0.304443, 1.91699, -186.125, -0.304443, -0.0826416, -186.125, 175.75, -0.0826416, -58.1875, -0.304443, -0.0826416, -186.125, 108.5, -0.0826416, 148.75, -109.125, -0.0826416, 148.75, -176.375, -0.0826416, -58.1875 )
+
+[sub_resource type="SpatialMaterial" id=6]
 
 render_priority = 0
 flags_transparent = false
@@ -25,8 +29,8 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.21875, 1, 0, 1 )
-metallic = 0.6
+albedo_color = Color( 1, 0, 0, 1 )
+metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
 roughness = 0.0
@@ -52,85 +56,23 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Metallic" ]
+_sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="CubeMesh" id=2]
+[sub_resource type="CylinderMesh" id=7]
 
-material = SubResource( 1 )
-size = Vector3( 1, 0.1, 1 )
-subdivide_width = 0
-subdivide_height = 0
-subdivide_depth = 0
-
-[sub_resource type="BoxShape" id=3]
-
-extents = Vector3( 0.505687, 0.0510185, 0.505733 )
-
-[sub_resource type="PrismMesh" id=4]
-
-left_to_right = 0.5
-size = Vector3( 0.5, 0.5, 0.5 )
-subdivide_width = 0
-subdivide_height = 0
-subdivide_depth = 0
-
-[sub_resource type="ConvexPolygonShape" id=5]
-
-points = PoolVector3Array( -0.304443, 1.91699, -186.125, -0.304443, -0.0826416, -186.125, 175.75, 1.91699, -58.1875, 175.75, -0.0826416, -58.1875, 175.75, 1.91699, -58.1875, 175.75, -0.0826416, -58.1875, 108.5, 1.91699, 148.75, 108.5, -0.0826416, 148.75, 108.5, 1.91699, 148.75, 108.5, -0.0826416, 148.75, -109.125, 1.91699, 148.75, -109.125, -0.0826416, 148.75, -0.304443, 1.91699, -186.125, 175.75, 1.91699, -58.1875, -176.375, 1.91699, -58.1875, -109.125, 1.91699, 148.75, 108.5, 1.91699, 148.75, -109.125, 1.91699, 148.75, -109.125, -0.0826416, 148.75, -176.375, 1.91699, -58.1875, -176.375, -0.0826416, -58.1875, -176.375, 1.91699, -58.1875, -176.375, -0.0826416, -58.1875, -0.304443, 1.91699, -186.125, -0.304443, -0.0826416, -186.125, 175.75, -0.0826416, -58.1875, -0.304443, -0.0826416, -186.125, 108.5, -0.0826416, 148.75, -109.125, -0.0826416, 148.75, -176.375, -0.0826416, -58.1875 )
+material = SubResource( 6 )
+top_radius = 10.0
+bottom_radius = 10.0
+height = 50.0
+radial_segments = 64
+rings = 4
 
 [node name="Spatial" type="Spatial"]
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+[node name="Pentagon" type="MeshInstance" parent="." index="0"]
 
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 2 )
-skeleton = NodePath("..")
-material/0 = null
-_sections_unfolded = [ "Transform" ]
-
-[node name="StaticBody" type="StaticBody" parent="MeshInstance" index="0"]
-
-input_ray_pickable = true
-input_capture_on_drag = false
-collision_layer = 1
-collision_mask = 1
-friction = 1.0
-bounce = 0.0
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
-_sections_unfolded = [ "Collision" ]
-
-[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody" index="0"]
-
-shape = SubResource( 3 )
-disabled = false
-
-[node name="MeshInstance2" type="MeshInstance" parent="." index="1"]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.295361, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
-skeleton = NodePath("..")
-material/0 = null
-
-[node name="Pentagon" type="MeshInstance" parent="." index="2"]
-
+editor/display_folded = true
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -143,6 +85,7 @@ lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
 skeleton = NodePath("..")
 material/0 = null
+_sections_unfolded = [ "Transform" ]
 
 [node name="StaticBody" type="StaticBody" parent="Pentagon" index="0"]
 
@@ -159,5 +102,22 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 
 shape = SubResource( 5 )
 disabled = false
+
+[node name="MeshInstance" type="MeshInstance" parent="." index="1"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 5, 0, 22.954, 128.906 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 7 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "Transform" ]
 
 

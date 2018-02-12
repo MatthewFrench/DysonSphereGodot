@@ -103,8 +103,8 @@ public class MyNode : Node
             //Get the local axis of the instance
             var axis2 = groundTest.GetTransform().basis.Xform(new Vector3(0, 1, 0)).Normalized();
             //Rotate it to match up with other parts of the sphere
-            //groundTest.Rotate(axis2, (float)(30.0 / 180.0 * Math.PI + polygonRotation));
-            groundTest.Rotate(axis2, -polygonRotation);
+            //groundTest.Rotate(axis2, (float)(30.0 / 180.0 * Math.PI - polygonRotation));
+            //groundTest.Rotate(axis2, -polygonRotation);
             //Add ground to world
             this.AddChild(groundTest);
             this.hexInstances.Add(groundTest);
@@ -115,7 +115,8 @@ public class MyNode : Node
         var surfTool = new SurfaceTool();
         var mesh = new ArrayMesh();
         var material = new SpatialMaterial();
-        material.SetEmission(new Color(1.0f, 0.0f, 0.0f, 0.5f));
+        material.SetEmission(new Color(1.0f, 0.0f, 0.0f));
+        material.SetAlbedo(new Color(1.0f, 0.0f, 0.0f));
         surfTool.SetMaterial(material);
         surfTool.Begin(Mesh.PrimitiveType.LineLoop);
         decimal tileCenterX = 0;
