@@ -160,8 +160,6 @@ namespace Test
         public String toString()
         {
             return "" + this.x + "," + this.y + "," + this.z;
-
-            //return "" + limitDecimals(this.x, 3) + "," + limitDecimals(this.y, 3) + "," + limitDecimals(this.z, 3);
         }
     }
 }

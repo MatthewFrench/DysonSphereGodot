@@ -12,22 +12,27 @@ public class MyNode : Node
         // Initialization here
         GD.Print("Hello from the Node CS Script Init");
 
+        //Define sphere properties
         float radius = 1000;
         float scale = radius;
         int subdivisionCount = 3;
 
+        //h is used for creating full size tiles
         Hexasphere h = new Hexasphere((decimal)radius, subdivisionCount, 1);
+        //h2 is for creating the line mesh
         Hexasphere h2 = new Hexasphere((decimal)(radius*0.99), subdivisionCount, 1);
 
         GD.Print("Number of Tiles: " + h.GetTiles().Count);
+        //Load the instances to put in the scene
         var meshInstance = (PackedScene)ResourceLoader.Load("res://MeshInstance.tscn");
         var sphereMeshScene = (PackedScene)ResourceLoader.Load("res://SphereMesh.tscn");
         var hexagonTestScene = (PackedScene)ResourceLoader.Load("res://Hexagon Test.tscn");
         var pentagonTestScene = (PackedScene)ResourceLoader.Load("res://Pentagon Test.tscn");
+        //Create all the tiles
         foreach (var tile in h.GetTiles()) {
             CreateInstance(tile, hexagonTestScene, pentagonTestScene);
         }
-
+        //Create the line mesh
         foreach (var tile in h2.GetTiles())
         {
             CreateMesh(tile, sphereMeshScene, h2.GetTiles().Count, radius*0.99f);
@@ -41,6 +46,8 @@ public class MyNode : Node
         decimal polygonRadius = 0;
 
         List<Point> points = tile.boundary;
+
+        //Calculate the average center point and polygon side length.
         var lastPoint = points[points.Count - 1];
         Vector3 lastPointVector = new Vector3((float)lastPoint.x, (float)lastPoint.y, (float)lastPoint.z);
         decimal polygonSideLength = 0;
@@ -55,9 +62,11 @@ public class MyNode : Node
         }
         polygonSideLength = polygonSideLength / points.Count;
 
+        //Create the center point
         var tileCenterPoint = new Vector3((float)tileCenterX, (float)tileCenterY, (float)tileCenterZ);
         var firstPoint = new Vector3((float)points[0].x, (float)points[0].y, (float)points[0].z);
 
+        //Get the average polygon radius from center to each point.
         foreach (Point point in points)
         {
             var vector = new Vector3((float)point.x, (float)point.y, (float)point.z);
@@ -72,6 +81,7 @@ public class MyNode : Node
 
         var sphereCenterPoint = new Vector3(0f, 0f, 0f);
 
+        //Create the tile instance
         Spatial groundTest = null;
         if (points.Count == 5)
         {
