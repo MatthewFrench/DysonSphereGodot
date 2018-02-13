@@ -118,6 +118,18 @@ public class MyNode : Node
             //Add ground to world
             this.AddChild(groundTest);
             this.hexInstances.Add(groundTest);
+
+            //Play around with getting the tile information
+            var testVector = groundTest.ToLocal(firstPoint);
+            GD.Print("First Point: " + firstPoint);
+            GD.Print("Local First Point: " + testVector);
+            //Now try to find rotation of the point
+            var testVector2D = new Vector2(testVector.x, testVector.z);
+            var angle = testVector2D.AngleToPoint(new Vector2(0, (float)polygonRadius));
+            //Now test rotating - This appears to be correct
+            groundTest.Rotate(axis2, angle);
+            //Polygon isn't corrected for the original rotation
+            GD.Print("Y Axis not normalized" + groundTest.GetTransform().basis.Xform(new Vector3(0, 1, 0)));
         }
     }
 
