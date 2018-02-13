@@ -19,7 +19,7 @@ subdivide_depth = 0
 
 extents = Vector3( 0.518013, 0.0613279, 0.477606 )
 
-[node name="Node" type="Node" index="0"]
+[node name="Node" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]

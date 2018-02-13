@@ -26,20 +26,23 @@ public class MyNode : Node
         //Load the instances to put in the scene
         var meshInstance = (PackedScene)ResourceLoader.Load("res://MeshInstance.tscn");
         var sphereMeshScene = (PackedScene)ResourceLoader.Load("res://SphereMesh.tscn");
+        var greenSphereMeshScene = (PackedScene)ResourceLoader.Load("res://GreenSphereMesh.tscn");
+        var redSphereMeshScene = (PackedScene)ResourceLoader.Load("res://RedSphereMesh.tscn");
         var hexagonTestScene = (PackedScene)ResourceLoader.Load("res://Hexagon Test.tscn");
         var pentagonTestScene = (PackedScene)ResourceLoader.Load("res://Pentagon Test.tscn");
+        var numberOfTiles = h.GetTiles().Count;
         //Create all the tiles
         foreach (var tile in h.GetTiles()) {
-            CreateInstance(tile, hexagonTestScene, pentagonTestScene);
+            CreateInstance(tile, hexagonTestScene, pentagonTestScene, redSphereMeshScene, radius / numberOfTiles);
         }
         //Create the line mesh
         foreach (var tile in h2.GetTiles())
         {
-            CreateMesh(tile, sphereMeshScene, h2.GetTiles().Count, radius*0.99f);
+            CreateMesh(tile, sphereMeshScene, greenSphereMeshScene, h2.GetTiles().Count, radius*0.99f);
         }
     }
 
-    public void CreateInstance(Tile tile, PackedScene hexagonTestScene, PackedScene pentagonTestScene) {
+    public void CreateInstance(Tile tile, PackedScene hexagonTestScene, PackedScene pentagonTestScene, PackedScene redSphereMeshScene, float sphereScale) {
         decimal tileCenterX = 0;
         decimal tileCenterY = 0;
         decimal tileCenterZ = 0;
@@ -74,9 +77,9 @@ public class MyNode : Node
         }
         polygonRadius = polygonRadius / points.Count;
 
-        var polygonRotation = firstPoint.AngleTo(tileCenterPoint);
-        GD.Print("First Point Radians: " + polygonRotation);
-        GD.Print("First Point Degrees: " + Math.Round(polygonRotation * 180 / Math.PI));
+        //var polygonRotation = firstPoint.AngleTo(tileCenterPoint);
+        //GD.Print("First Point Radians: " + polygonRotation);
+        //GD.Print("First Point Degrees: " + Math.Round(polygonRotation * 180 / Math.PI));
 
 
         var sphereCenterPoint = new Vector3(0f, 0f, 0f);
@@ -119,6 +122,9 @@ public class MyNode : Node
             this.AddChild(groundTest);
             this.hexInstances.Add(groundTest);
 
+            /*
+             * First half of solution1, seems to work fairly well
+             * 
             //Play around with getting the tile information
             var testVector = groundTest.ToLocal(firstPoint);
             GD.Print("First Point: " + firstPoint);
@@ -129,11 +135,49 @@ public class MyNode : Node
             //Now test rotating - This appears to be correct
             groundTest.Rotate(axis2, angle);
             //Polygon isn't corrected for the original rotation
-            GD.Print("Y Axis not normalized" + groundTest.GetTransform().basis.Xform(new Vector3(0, 1, 0)));
+            GD.Print("Rotated by angle " + (angle * 180 / Math.PI));
+            */
+
+            //Idea:
+            /*
+             * Create original point at (0,0,polygonRadius)
+             * Do node.ToWorld(point)
+             * Now we have two points in the world
+             * Can we get the rotation from world point 1 to world point 2 relative to center
+             * and apply it ot the node?
+             */
+            //Create and convert local point to world point
+            var localOriginalFirstPoint = new Vector3(0, 0, (float)polygonRadius);
+            var worldOriginalFirstPoint = groundTest.ToGlobal(localOriginalFirstPoint);
+
+            var worldGeneratedFirstPoint = firstPoint;
+            var localGeneratedFirstPoint = groundTest.ToLocal(worldGeneratedFirstPoint);
+
+            MeshInstance sphere = (MeshInstance)redSphereMeshScene.Instance();
+            sphere.SetTranslation(worldOriginalFirstPoint);
+            sphere.SetScale(new Vector3(sphereScale, sphereScale, sphereScale));
+            this.AddChild(sphere);
+            //World Original First Point works and is correct
+            //Now is there a way I can get the two points and match them up?
+            var angleCalcOriginalPoint = worldOriginalFirstPoint - tileCenterPoint;
+            var angleCalcFirstPoint = firstPoint - tileCenterPoint;
+
+            var angle = angleCalcFirstPoint.AngleTo(angleCalcOriginalPoint);
+            var angle2 = new Vector2(localGeneratedFirstPoint.x, localGeneratedFirstPoint.z).AngleTo(new Vector2(localOriginalFirstPoint.x, localOriginalFirstPoint.z));
+            //Todo: Try converting the points to 2D first because they're already local
+
+            var axis3 = groundTest.GetTransform().basis.Xform(new Vector3(0, 1, 0));
+            //angleCalcFirstPoint.
+            //Rotate it to match up with other parts of the sphere
+            groundTest.Rotate(axis3, angle2);
+
+
+            var newWorldPoint = groundTest.ToGlobal(localOriginalFirstPoint);
+            GD.Print("Difference: " + (worldGeneratedFirstPoint - newWorldPoint));
         }
     }
 
-    public void CreateMesh(Tile tile, PackedScene sphereMeshScene, int numberOfTiles, float radius) {
+    public void CreateMesh(Tile tile, PackedScene sphereMeshScene, PackedScene greenSphereMeshScene, int numberOfTiles, float radius) {
         var surfTool = new SurfaceTool();
         var mesh = new ArrayMesh();
         var material = new SpatialMaterial();
@@ -183,6 +227,16 @@ public class MyNode : Node
         sphere.SetTranslation(tileCenterPoint);
         sphere.SetScale(new Vector3(sphereScale, sphereScale, sphereScale));
         this.AddChild(sphere);
+
+        MeshInstance sphere2 = (MeshInstance)greenSphereMeshScene.Instance();
+        sphere2.SetTranslation(firstPoint);
+        sphere2.SetScale(new Vector3(sphereScale, sphereScale, sphereScale));
+        this.AddChild(sphere2);
+
+        MeshInstance sphere3 = (MeshInstance)greenSphereMeshScene.Instance();
+        sphere3.SetTranslation((firstPoint - tileCenterPoint) / 2 + tileCenterPoint);
+        sphere3.SetScale(new Vector3(sphereScale, sphereScale, sphereScale));
+        this.AddChild(sphere3);
 
         surfTool.GenerateNormals();
         surfTool.Index();

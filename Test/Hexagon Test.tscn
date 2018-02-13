@@ -2,11 +2,11 @@
 
 [ext_resource path="res://Hexagon.obj" type="ArrayMesh" id=1]
 
-[sub_resource type="ConvexPolygonShape" id=5]
+[sub_resource type="ConvexPolygonShape" id=1]
 
 points = PoolVector3Array( 0, 1, -232.875, 0, -1, -232.875, 201.75, 1, -116.438, 201.75, -1, -116.438, 201.75, 1, -116.438, 201.75, -1, -116.438, 201.75, 1, 116.438, 201.75, -1, 116.438, 201.75, 1, 116.438, 201.75, -1, 116.438, 0, 1, 232.875, 0, -1, 232.875, 0, 1, 232.875, 0, -1, 232.875, -201.75, 1, 116.438, -201.75, -1, 116.438, 0, 1, -232.875, 201.75, 1, -116.438, -201.75, 1, -116.438, -201.75, 1, 116.438, 0, 1, 232.875, 201.75, 1, 116.438, -201.75, 1, 116.438, -201.75, -1, 116.438, -201.75, 1, -116.438, -201.75, -1, -116.438, -201.75, 1, -116.438, -201.75, -1, -116.438, 0, 1, -232.875, 0, -1, -232.875, 201.75, -1, -116.438, 0, -1, -232.875, 201.75, -1, 116.438, 0, -1, 232.875, -201.75, -1, 116.438, -201.75, -1, -116.438 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=2]
 
 render_priority = 0
 flags_transparent = false
@@ -58,16 +58,16 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="CylinderMesh" id=6]
+[sub_resource type="CylinderMesh" id=3]
 
-material = SubResource( 7 )
+material = SubResource( 2 )
 top_radius = 5.0
 bottom_radius = 5.0
 height = 50.0
 radial_segments = 64
 rings = 4
 
-[node name="Spatial" type="Spatial"]
+[node name="Spatial" type="Spatial" index="0"]
 
 [node name="MeshInstance3" type="MeshInstance" parent="." index="0"]
 
@@ -98,7 +98,7 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="MeshInstance3/StaticBody" index="0"]
 
-shape = SubResource( 5 )
+shape = SubResource( 1 )
 disabled = false
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="1"]
@@ -113,7 +113,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 6 )
+mesh = SubResource( 3 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Geometry", "Transform" ]
