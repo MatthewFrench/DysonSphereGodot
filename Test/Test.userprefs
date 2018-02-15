@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.ItemProperties.Run PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="MyNode.cs">
     <Files>
-      <File FileName="MyNode.cs" Line="30" Column="9" />
+      <File FileName="MyNode.cs" Line="18" Column="34" />
       <File FileName="TestRun.cs" Line="4" Column="19" />
       <File FileName="Run/Program.cs" Line="13" Column="57" />
     </Files>

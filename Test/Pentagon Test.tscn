@@ -2,11 +2,11 @@
 
 [ext_resource path="res://Pentagon.obj" type="ArrayMesh" id=1]
 
-[sub_resource type="ConvexPolygonShape" id=5]
+[sub_resource type="ConvexPolygonShape" id=1]
 
 points = PoolVector3Array( -0.304443, 1.91699, -186.125, -0.304443, -0.0826416, -186.125, 175.75, 1.91699, -58.1875, 175.75, -0.0826416, -58.1875, 175.75, 1.91699, -58.1875, 175.75, -0.0826416, -58.1875, 108.5, 1.91699, 148.75, 108.5, -0.0826416, 148.75, 108.5, 1.91699, 148.75, 108.5, -0.0826416, 148.75, -109.125, 1.91699, 148.75, -109.125, -0.0826416, 148.75, -0.304443, 1.91699, -186.125, 175.75, 1.91699, -58.1875, -176.375, 1.91699, -58.1875, -109.125, 1.91699, 148.75, 108.5, 1.91699, 148.75, -109.125, 1.91699, 148.75, -109.125, -0.0826416, 148.75, -176.375, 1.91699, -58.1875, -176.375, -0.0826416, -58.1875, -176.375, 1.91699, -58.1875, -176.375, -0.0826416, -58.1875, -0.304443, 1.91699, -186.125, -0.304443, -0.0826416, -186.125, 175.75, -0.0826416, -58.1875, -0.304443, -0.0826416, -186.125, 108.5, -0.0826416, 148.75, -109.125, -0.0826416, 148.75, -176.375, -0.0826416, -58.1875 )
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=2]
 
 render_priority = 0
 flags_transparent = false
@@ -58,20 +58,19 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="CylinderMesh" id=7]
+[sub_resource type="CylinderMesh" id=3]
 
-material = SubResource( 6 )
+material = SubResource( 2 )
 top_radius = 10.0
 bottom_radius = 10.0
 height = 50.0
 radial_segments = 64
 rings = 4
 
-[node name="Spatial" type="Spatial"]
+[node name="Spatial" type="Spatial" index="0"]
 
 [node name="Pentagon" type="MeshInstance" parent="." index="0"]
 
-editor/display_folded = true
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 layers = 1
 material_override = null
@@ -100,12 +99,12 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Pentagon/StaticBody" index="0"]
 
-shape = SubResource( 5 )
+shape = SubResource( 1 )
 disabled = false
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="1"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 5, 0, 22.954, 128.906 )
+transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 3.67605, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -115,7 +114,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 7 )
+mesh = SubResource( 3 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]

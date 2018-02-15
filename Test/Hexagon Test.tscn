@@ -67,7 +67,7 @@ height = 50.0
 radial_segments = 64
 rings = 4
 
-[node name="Spatial" type="Spatial" index="0"]
+[node name="Spatial" type="Spatial"]
 
 [node name="MeshInstance3" type="MeshInstance" parent="." index="0"]
 
@@ -104,6 +104,7 @@ disabled = false
 [node name="MeshInstance" type="MeshInstance" parent="." index="1"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 20, 0, 24.2345, 129.01 )
+visible = false
 layers = 1
 material_override = null
 cast_shadow = 1

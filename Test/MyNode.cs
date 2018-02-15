@@ -13,9 +13,9 @@ public class MyNode : Node
         GD.Print("Hello from the Node CS Script Init");
 
         //Define sphere properties
-        float radius = 1000;
+        float radius = 151;
         float scale = radius;
-        int subdivisionCount = 3;
+        int subdivisionCount = 5;
 
         //h is used for creating full size tiles
         Hexasphere h = new Hexasphere((decimal)radius, subdivisionCount, 1);
@@ -38,7 +38,7 @@ public class MyNode : Node
         //Create the line mesh
         foreach (var tile in h2.GetTiles())
         {
-            CreateMesh(tile, sphereMeshScene, greenSphereMeshScene, h2.GetTiles().Count, radius*0.99f);
+            //CreateMesh(tile, sphereMeshScene, greenSphereMeshScene, h2.GetTiles().Count, radius*0.99f);
         }
     }
 
