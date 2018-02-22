@@ -1,5 +1,44 @@
-[gd_scene format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://MattLevel/Hexagon.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MattLevel/PlayerBase.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MattLevel/PlayerPhysics.gd" type="Script" id=3]
 
 [node name="Spatial" type="Spatial" index="0"]
+
+[node name="Scene Root" type="Spatial" parent="." index="0" instance=ExtResource( 1 )]
+
+_sections_unfolded = [ "Transform" ]
+
+[node name="PlayerBase" type="RigidBody" parent="." index="1" instance=ExtResource( 2 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.46286, 0 )
+input_ray_pickable = true
+input_capture_on_drag = false
+collision_layer = 1
+collision_mask = 1
+mode = 2
+mass = 50.0
+friction = 0.1
+bounce = 0.0
+gravity_scale = 8.0
+custom_integrator = false
+continuous_cd = false
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = false
+axis_lock_linear_x = false
+axis_lock_linear_y = false
+axis_lock_linear_z = false
+axis_lock_angular_x = false
+axis_lock_angular_y = false
+axis_lock_angular_z = false
+linear_velocity = Vector3( 0, 0, 0 )
+linear_damp = -1.0
+angular_velocity = Vector3( 0, 0, 0 )
+angular_damp = -1.0
+script = ExtResource( 3 )
+_sections_unfolded = [ "Transform" ]
 
 

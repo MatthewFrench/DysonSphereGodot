@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="Test"
-run/main_scene="res://Node.tscn"
+run/main_scene="res://MattLevel/Main.tscn"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
 

@@ -181,6 +181,8 @@ transform = Transform( 1.01107, 0, 0, 0, 0.69594, -0.733437, 0, 0.733437, 0.6959
 
 [node name="baselevel" parent="." index="10" instance=ExtResource( 5 )]
 
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0231495, -0.0458622, -0.0311689 )
+
 [node name="killable" parent="." index="11" instance=ExtResource( 6 )]
 
 transform = Transform( 1.01107, 0, 0, 0, 1.01107, 0, 0, 0, 1.01107, -45.954, 26.3962, 13.3128 )
