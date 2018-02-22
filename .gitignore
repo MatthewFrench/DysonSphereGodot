@@ -2,3 +2,4 @@ Test/Run/bin
 Test/Run/obj
 Test/.mono
 Test/packages
+.vs
