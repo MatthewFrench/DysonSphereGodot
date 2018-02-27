@@ -1,8 +1,59 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[sub_resource type="ArrayMesh" id=1]
+[sub_resource type="SpatialMaterial" id=1]
 
-resource_name = "Cylinder.001"
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 1, 0, 0, 1 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 0.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
+_sections_unfolded = [ "Albedo" ]
+
+[sub_resource type="ArrayMesh" id=2]
+
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 surfaces/0 = {
@@ -12,16 +63,18 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98051,
 "index_count": 60,
+"material": SubResource( 1 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 36
 }
+_sections_unfolded = [ "surface_1" ]
 
-[sub_resource type="ConvexPolygonShape" id=2]
+[sub_resource type="ConvexPolygonShape" id=3]
 
 points = PoolVector3Array( 0, 0.5, -21.0625, 18.2344, -0.5, -10.5313, 0, -0.5, -21.0625, 18.2344, 0.5, -10.5313, 18.2344, -0.5, 10.5313, 18.2344, -0.5, -10.5313, 18.2344, 0.5, 10.5313, 0, -0.5, 21.0625, 18.2344, -0.5, 10.5313, 0, 0.5, 21.0625, -18.2344, -0.5, 10.5313, 0, -0.5, 21.0625, -18.2344, 0.5, 10.5313, 0, 0.5, 21.0625, 18.2344, 0.5, 10.5313, -18.2344, 0.5, 10.5313, -18.2344, -0.5, -10.5313, -18.2344, -0.5, 10.5313, -18.2344, 0.5, -10.5313, 0, -0.5, -21.0625, -18.2344, -0.5, -10.5313, 0, -0.5, 21.0625, -18.2344, -0.5, 10.5313, -18.2344, -0.5, -10.5313, 18.2344, 0.5, -10.5313, 18.2344, 0.5, 10.5313, 0, 0.5, 21.0625, -18.2344, 0.5, 10.5313, 18.2344, 0.5, -10.5313, 0, 0.5, -21.0625, -18.2344, 0.5, -10.5313, -18.2344, 0.5, -10.5313, 0, 0.5, -21.0625, 0, -0.5, -21.0625, 18.2344, -0.5, -10.5313, 18.2344, -0.5, 10.5313 )
 
-[node name="Scene Root" type="Spatial"]
+[node name="Scene Root" type="Spatial" index="0"]
 
 [node name="Cylinder" type="MeshInstance" parent="." index="0"]
 
@@ -34,7 +87,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 1 )
+mesh = SubResource( 2 )
 skeleton = NodePath("..")
 material/0 = null
 
@@ -51,7 +104,7 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Cylinder/StaticBody2" index="0"]
 
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 disabled = false
 
 

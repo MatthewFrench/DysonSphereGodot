@@ -1,10 +1,14 @@
 ﻿<Properties StartupConfiguration="{390E6A58-25BA-47C4-AB92-23EC3F6D4831}|Default">
   <MonoDevelop.Ide.ItemProperties.Run PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyNode.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MazePuzzleNode.cs">
     <Files>
-      <File FileName="MyNode.cs" Line="18" Column="34" />
+      <File FileName="MyNode.cs" Line="189" Column="33" />
       <File FileName="TestRun.cs" Line="4" Column="19" />
       <File FileName="Run/Program.cs" Line="13" Column="57" />
+      <File FileName="Maze.cs" Line="55" Column="27" />
+      <File FileName="Cell.cs" Line="67" Column="18" />
+      <File FileName="MazePuzzleNode.cs" Line="107" Column="6" />
+      <File FileName="Hexasphere.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
@@ -13,5 +17,4 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.Test PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
