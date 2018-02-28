@@ -63,10 +63,13 @@ public class MazePuzzleNode : Node
         var surfTool = new SurfaceTool();
         var mesh = new ArrayMesh();
         var material = new SpatialMaterial();
-        //material.SetEmission(new Color(1.0f, 0.0f, 0.0f));
-        material.SetAlbedo(new Color(1.0f, 0.0f, 0.0f));
+        material.SetEmission(new Color(1.0f, 0.0f, 0.0f));
+        material.SetEmissionEnergy(0.5f);
+        material.SetAlbedo(new Color(0.5f, 0.0f, 0.0f));
+        material.SetMetallic(0.5f);
         material.SetCullMode(SpatialMaterial.CullMode.Disabled);
-        surfTool.Begin(Mesh.PrimitiveType.TriangleStrip);
+        surfTool.Begin(Mesh.PrimitiveType.Triangles);
+        surfTool.SetMaterial(material);
 
         //Add geometry
         AddWall(surfTool, material, point1, point2, width, height);
@@ -77,6 +80,7 @@ public class MazePuzzleNode : Node
         surfTool.Commit(mesh);
         var meshInstance = new MeshInstance();
         meshInstance.SetMesh(mesh);
+        meshInstance.SetCastShadowsSetting(GeometryInstance.ShadowCastingSetting.DoubleSided);
         this.AddChild(meshInstance);
     }
 
@@ -173,15 +177,15 @@ public class MazePuzzleNode : Node
 
     //Adds a triangle to a surface tool.
     public void AddTriangle(SurfaceTool surfTool, SpatialMaterial material, Vector3 point1, Vector3 point2, Vector3 point3) {
-        surfTool.SetMaterial(material);
+        //surfTool.SetMaterial(material);
         surfTool.AddUv(new Vector2(0, 0));
         surfTool.AddVertex(point1);
 
-        surfTool.SetMaterial(material);
+        //surfTool.SetMaterial(material);
         surfTool.AddUv(new Vector2(0, 0));
         surfTool.AddVertex(point2);
 
-        surfTool.SetMaterial(material);
+        //surfTool.SetMaterial(material);
         surfTool.AddUv(new Vector2(0, 0));
         surfTool.AddVertex(point3);
     }

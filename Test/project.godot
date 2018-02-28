@@ -15,10 +15,17 @@ run/main_scene="res://MattLevel/Main.tscn"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=1400
+window/size/height=800
+window/dpi/allow_hidpi=true
+
 [editor_plugins]
 
 enabled=PoolStringArray( "toyman.terraineditor" )
 
 [rendering]
 
+quality/shadow_atlas/size=4094
 environment/default_environment="res://default_env.tres"

@@ -7,7 +7,7 @@
       <File FileName="Run/Program.cs" Line="13" Column="57" />
       <File FileName="Maze.cs" Line="55" Column="27" />
       <File FileName="Cell.cs" Line="67" Column="18" />
-      <File FileName="MazePuzzleNode.cs" Line="107" Column="6" />
+      <File FileName="MazePuzzleNode.cs" Line="83" Column="95" />
       <File FileName="Hexasphere.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
