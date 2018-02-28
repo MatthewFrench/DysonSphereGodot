@@ -8,15 +8,17 @@ namespace Test.MeshUtilities
     public class MeshCreation
     {
         //Creates a surface tool for mesh creation
-        public static SurfaceTool CreateSurfaceTool() {
+        public static SurfaceTool CreateSurfaceTool(SpatialMaterial material = null) {
             var surfTool = new SurfaceTool();
             surfTool.Begin(Mesh.PrimitiveType.Triangles);
-            var material = new SpatialMaterial();
-            material.SetEmission(new Color(1.0f, 0.0f, 0.0f));
-            material.SetEmissionEnergy(0.5f);
-            material.SetAlbedo(new Color(0.5f, 0.0f, 0.0f));
-            material.SetMetallic(0.5f);
-            material.SetCullMode(SpatialMaterial.CullMode.Disabled);
+            if (material == null) {
+                material = new SpatialMaterial();
+                material.SetEmission(new Color(1.0f, 0.0f, 0.0f));
+                material.SetEmissionEnergy(0.5f);
+                material.SetAlbedo(new Color(0.5f, 0.0f, 0.0f));
+                material.SetMetallic(0.5f);
+                material.SetCullMode(SpatialMaterial.CullMode.Disabled);
+            }
             surfTool.SetMaterial(material);
             return surfTool;
         }
@@ -134,15 +136,12 @@ namespace Test.MeshUtilities
         //Adds a triangle to a surface tool.
         public static void AddTriangle(SurfaceTool surfTool, Vector3 point1, Vector3 point2, Vector3 point3)
         {
-            //surfTool.SetMaterial(material);
             surfTool.AddUv(new Vector2(0, 0));
             surfTool.AddVertex(point1);
 
-            //surfTool.SetMaterial(material);
             surfTool.AddUv(new Vector2(0, 0));
             surfTool.AddVertex(point2);
 
-            //surfTool.SetMaterial(material);
             surfTool.AddUv(new Vector2(0, 0));
             surfTool.AddVertex(point3);
         }

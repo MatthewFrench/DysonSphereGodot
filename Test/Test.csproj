@@ -68,13 +68,18 @@
     <Compile Include="TestRun.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="Cell.cs" />
-    <Compile Include="Mesh Utilities\MeshCreation.cs" />
+    <Compile Include="Mesh Creation\MeshCreation.cs" />
+    <Compile Include="Maze Creation\SquareCell.cs" />
+    <Compile Include="Maze Creation\Maze.cs" />
+    <Compile Include="Utility\Intersection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mesh Utilities\" />
+    <Folder Include="Mesh Creation\" />
+    <Folder Include="Maze Creation\" />
+    <Folder Include="Utility\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
