@@ -1,16 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://MattLevel/Hexagon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://MattLevel/PlayerBase.tscn" type="PackedScene" id=2]
 [ext_resource path="res://MattLevel/PlayerPhysics.gd" type="Script" id=3]
 [ext_resource path="res://MazePuzzleNode.cs" type="Script" id=4]
-
-[sub_resource type="CapsuleMesh" id=1]
-
-radius = 1.0
-mid_height = 1.0
-radial_segments = 64
-rings = 8
 
 [node name="Spatial" type="Spatial" index="0"]
 
@@ -55,22 +48,5 @@ directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Light", "Omni", "Shadow" ]
-
-[node name="MeshInstance" type="MeshInstance" parent="." index="4"]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.94837, 0 )
-layers = 1
-material_override = null
-cast_shadow = 2
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 1 )
-skeleton = NodePath("..")
-material/0 = null
-_sections_unfolded = [ "Geometry" ]
 
 
