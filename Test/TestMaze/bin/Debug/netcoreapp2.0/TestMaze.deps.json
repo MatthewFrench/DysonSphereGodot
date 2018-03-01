@@ -1,0 +1,47 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "TestMaze/1.0.0": {
+        "dependencies": {
+          "GodotSharp": "1.0.6632.23647",
+          "GodotSharpEditor": "1.0.6632.23650"
+        },
+        "runtime": {
+          "TestMaze.dll": {}
+        }
+      },
+      "GodotSharp/1.0.6632.23647": {
+        "runtime": {
+          "GodotSharp.dll": {}
+        }
+      },
+      "GodotSharpEditor/1.0.6632.23650": {
+        "runtime": {
+          "GodotSharpEditor.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TestMaze/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GodotSharp/1.0.6632.23647": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GodotSharpEditor/1.0.6632.23650": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

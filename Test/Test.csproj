@@ -66,12 +66,11 @@
     <Compile Include="Hexasphere.cs" />
     <Compile Include="Vector.cs" />
     <Compile Include="TestRun.cs" />
-    <Compile Include="Maze.cs" />
-    <Compile Include="Cell.cs" />
     <Compile Include="Mesh Creation\MeshCreation.cs" />
-    <Compile Include="Maze Creation\SquareCell.cs" />
+    <Compile Include="Maze Creation\Cell.cs" />
     <Compile Include="Maze Creation\Maze.cs" />
     <Compile Include="Utility\Intersection.cs" />
+    <Compile Include="Maze Creation\Wall.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

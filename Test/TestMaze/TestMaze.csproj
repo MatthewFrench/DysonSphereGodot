@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Utility\Intersection.cs">
+      <Link>Intersection.cs</Link>
+    </Compile>
+    <Compile Include="..\Mesh Creation\MeshCreation.cs">
+      <Link>MeshCreation.cs</Link>
+    </Compile>
+    <Compile Include="..\Maze Creation\Cell.cs">
+      <Link>Cell.cs</Link>
+    </Compile>
+    <Compile Include="..\Maze Creation\Maze.cs">
+      <Link>Maze.cs</Link>
+    </Compile>
+    <Compile Include="..\Maze Creation\Wall.cs">
+      <Link>Wall.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="GodotSharp">
+      <HintPath>..\.mono\assemblies\GodotSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GodotSharpEditor">
+      <HintPath>..\.mono\assemblies\GodotSharpEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
