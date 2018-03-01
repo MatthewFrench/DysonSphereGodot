@@ -37,28 +37,6 @@ namespace Test.Utility
             }
             return false;
         }
-        /*
-        //Line intersection pulled from: http://www.java2s.com/Code/CSharp/Development-Class/Testsiftwolinesegmentsintersectornot.htm
-        //Tests if two line segments intersect or not.
-        public static bool DoLinesIntersect(Vector2 line1Point1, Vector2 line1Point2, Vector2 line2Point1, Vector2 line2Point2)
-        {
-            return CrossProduct(line1Point1, line1Point2, line2Point1) !=
-                   CrossProduct(line1Point1, line1Point2, line2Point2) ||
-                   CrossProduct(line2Point1, line2Point2, line1Point1) !=
-                   CrossProduct(line2Point1, line2Point2, line1Point2);
-        }
-        //Finds the cross product of the 2 vectors created by the 3 vertices.
-        public static decimal CrossProduct(Vector2 p1, Vector2 p2, Vector2 p3)
-        {
-            decimal p1x = (decimal)p1.x;
-            decimal p1y = (decimal)p1.y;
-            decimal p2x = (decimal)p2.x;
-            decimal p2y = (decimal)p2.y;
-            decimal p3x = (decimal)p3.x;
-            decimal p3y = (decimal)p3.y;
-            return (p2x - p1x) * (p3y - p1y) - (p3x - p1x) * (p2y - p1y);
-        }
-        */
 
         //Returns true if the lines intersect.
         public static bool DoLineSegmentsIntersection(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point4)

@@ -71,6 +71,7 @@
     <Compile Include="Maze Creation\Maze.cs" />
     <Compile Include="Utility\Intersection.cs" />
     <Compile Include="Maze Creation\Wall.cs" />
+    <Compile Include="Utility\ShapeGeometry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

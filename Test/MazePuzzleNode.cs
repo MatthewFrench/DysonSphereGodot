@@ -4,6 +4,7 @@ using Test;
 using System.Collections.Generic;
 using Test.MeshUtilities;
 using Test.MazeCreation;
+using Test.Utility;
 
 public class MazePuzzleNode : Node
 {
@@ -11,7 +12,7 @@ public class MazePuzzleNode : Node
 
     public override void _Ready()
     {
-        maze = new Maze(new List<Vector2>(){new Vector2(-10, -10), new Vector2(10, -10), new Vector2(10, 10), new Vector2(-10, 10)});
+        maze = new Maze(ShapeGeometry.MakePolygon(6, 21, (float)Math.PI/2), new Vector2(-21, -21), new Vector2(21, 21));
 
         //Draw cells to single mesh and apply to screen
         var surfTool = MeshCreation.CreateSurfaceTool();

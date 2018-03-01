@@ -9,10 +9,19 @@ namespace Test.MazeCreation
         Dictionary<Tuple<int, int>, Cell> cellMap = new Dictionary<Tuple<int, int>, Cell>();
         List<Cell> cells = new List<Cell>();
         List<Vector2> limitPolygon;
-        public Maze(List<Vector2> limitPolygon)
+        Cell startCell = null, endCell = null;
+        public Maze(List<Vector2> limitPolygon, Vector2 startPosition, Vector2 endPosition)
         {
             this.limitPolygon = limitPolygon;
             Grow();
+            //Set the start and end cells
+            startCell = GetClosestCellToPosition(startPosition);
+            endCell = GetClosestCellToPosition(startPosition);
+            CreatePathThroughMaze();
+        }
+
+        private void CreatePathThroughMaze() {
+            
         }
 
         //Sets a seed at 0,0 and grows it until it hits boundaries
@@ -84,12 +93,29 @@ namespace Test.MazeCreation
             return cell;
         }
 
+        //Gets a cell at an exact position
         public Cell GetCellAtPosition(int x, int y) {
             var key = new Tuple<int, int>(x, y);
             if (cellMap.ContainsKey(key)) {
                 return cellMap[key];
             }
             return null;
+        }
+
+        //Gets a cell at the closest position
+        public Cell GetClosestCellToPosition(Vector2 position) {
+            float distance = float.MaxValue;
+            Cell chosenCell = null;
+            foreach (var cell in cells) {
+                var x = cell.GetX() - position.x;
+                var y = cell.GetY() - position.y;
+                float cellDistance = (float)Math.Sqrt(x * x + y * y);
+                if (distance > cellDistance) {
+                    distance = cellDistance;
+                    chosenCell = cell;
+                } 
+            }
+            return chosenCell;
         }
 
         //Returns the list of walls in the maze.
