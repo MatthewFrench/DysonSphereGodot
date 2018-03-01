@@ -13,6 +13,7 @@ public class MazePuzzleNode : Node
     public override void _Ready()
     {
         maze = new Maze(ShapeGeometry.MakePolygon(6, 21, (float)Math.PI/2), new Vector2(-21, -21), new Vector2(21, 21));
+        //maze = new Maze(ShapeGeometry.MakeStar(12, 21, (float)Math.PI / 2), new Vector2(-21, -21), new Vector2(21, 21));
 
         //Draw cells to single mesh and apply to screen
         var surfTool = MeshCreation.CreateSurfaceTool();
