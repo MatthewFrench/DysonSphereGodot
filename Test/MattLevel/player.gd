@@ -1,6 +1,6 @@
 extends KinematicBody
 #most of the camera control and movement is taken from a tutorial I found online
-var speed = 500
+var speed = 250
 var direction = Vector3()
 var gravity = -9.8
 var velocity = Vector3()
@@ -15,14 +15,12 @@ var flashlight
 
 var pos_label
 
-func _process(delta):
-	pos_label.text = ("%s %s" % [self.translation.x, self.translation.z])
+#func _process(delta):
 
 func _ready():
 	set_process_input(true)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera = get_node("yaw/Camera")
-	pos_label = get_node("poslabel")
 	self.set_meta("name","player")
 	flashlight = get_node("yaw/SpotLight")
 	flashlight.visible = false
@@ -65,15 +63,26 @@ func _physics_process(delta):
 	if is_on_floor() and Input.is_key_pressed(KEY_H):
 		velocity.y = 20
 		
+# cast a short ray and call the use() method if the object we hit is usable
 func use_thing():
-#	print("use")
 	var ray = self.get_node("yaw/Camera/ray")
 	if ray.is_colliding():
 		var object = ray.get_collider()
 		var type = object.get_meta("type")
 		if type == "usable":
-	#		print("attempting to use ",object," of type ",type," and name ",object.get_meta("name"))
+#			print("attempting to use ",object," of type ",type," and name ",object.get_meta("name"))
 			object.get_node("..").use(self)
+	pass
+	
+# cast a ray (a much longer one than the "use item" ray), call onDeath() if the object being hit is killable
+func shoot():
+	var gun = self.get_node("yaw/Camera/gun")
+	if gun.is_colliding():
+		var object = gun.get_collider()
+		var type = object.get_meta("type") # spams errors if the object doesn't have a type set, doesn't crash tho
+		print("shooting at ",object)
+		if type == "killable":
+			object.get_node("..").onDeath()
 	pass
 	
 func change_pov():
@@ -97,6 +106,10 @@ func _input(ie):
 		
 	if ie is InputEventKey and Input.is_key_pressed(KEY_E):
 		use_thing()
+		pass
+		
+	if ie is InputEventKey and Input.is_key_pressed(KEY_CONTROL):
+		shoot()
 		pass
 	
 	if ie is InputEventKey and Input.is_key_pressed(KEY_F):

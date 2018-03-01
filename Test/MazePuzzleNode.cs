@@ -26,5 +26,13 @@ public class MazePuzzleNode : Node
         }
 
         this.AddChild(MeshCreation.CreateMeshInstanceFromMesh(MeshCreation.CreateMeshFromSurfaceTool(surfTool)));
+
+        KinematicBody player = (KinematicBody)this.GetParent().GetNode("player");
+        var startingCell = maze.GetStartingCell();
+        player.SetTranslation(new Vector3(startingCell.GetX(), 0.6f, startingCell.GetY()));
+
+        Spatial flag = (Spatial)this.GetParent().GetNode("Flag");
+        var endingCell = maze.GetEndingCell();
+        flag.SetTranslation(new Vector3(endingCell.GetX(), 0.6f, endingCell.GetY()));
     }
 }

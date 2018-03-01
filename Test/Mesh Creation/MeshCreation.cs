@@ -38,6 +38,9 @@ namespace Test.MeshUtilities
             var meshInstance = new MeshInstance();
             meshInstance.SetMesh(mesh);
             meshInstance.SetCastShadowsSetting(GeometryInstance.ShadowCastingSetting.DoubleSided);
+
+            meshInstance.CreateTrimeshCollision();
+
             return meshInstance;
         }
 

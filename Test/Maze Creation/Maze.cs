@@ -18,20 +18,73 @@ namespace Test.MazeCreation
             //Set the start and end cells
             startCell = GetClosestCellToPosition(startPosition);
             endCell = GetClosestCellToPosition(endPosition);
-            CreateMainPathThroughMaze();
+            CreatePathThroughMaze(startCell, endCell);
+            CreateRandomMazePaths();
+            //Open the end and start of the maze
+            if (startCell.GetLeftCell() == null) startCell.GetLeftWall().setKnockedDown(true);
+            if (startCell.GetRightCell() == null) startCell.GetRightWall().setKnockedDown(true);
+            if (startCell.GetTopCell() == null) startCell.GetTopWall().setKnockedDown(true);
+            if (startCell.GetBottomCell() == null) startCell.GetBottomWall().setKnockedDown(true);
+            if (endCell.GetLeftCell() == null) endCell.GetLeftWall().setKnockedDown(true);
+            if (endCell.GetRightCell() == null) endCell.GetRightWall().setKnockedDown(true);
+            if (endCell.GetTopCell() == null) endCell.GetTopWall().setKnockedDown(true);
+            if (endCell.GetBottomCell() == null) endCell.GetBottomWall().setKnockedDown(true);
         }
 
-        private void CreateMainPathThroughMaze() {
+        private void CreateRandomMazePaths() {
+            //Make a list of non-pathed cells
+            List<Cell> nonPathedCells = new List<Cell>();
+            List<Cell> pathedCells = new List<Cell>();
+            foreach (Cell cell in cells) {
+                if (!cell.GetIsInPath()) {
+                    nonPathedCells.Add(cell);
+                } else {
+                    pathedCells.Add(cell);
+                }
+            }
+            //Loop through cells and loop each non-pathed to a pathed
+            while (nonPathedCells.Count > 0) {
+                var availableTargets = new List<Cell>(pathedCells);
+                var cell = nonPathedCells[0];
+                nonPathedCells.RemoveAt(0);
+                pathedCells.Add(cell);
+                var gotPath = false;
+                while (!gotPath && availableTargets.Count > 0) {
+                    var randomTarget = availableTargets[random.Next(availableTargets.Count)];
+                    availableTargets.Remove(randomTarget);
+                    gotPath = CreatePathThroughMaze(cell, randomTarget);
+                }
+
+                TransferPathedCellsToNonPathed(nonPathedCells, pathedCells);
+            }
+        }
+
+        private void TransferPathedCellsToNonPathed(List<Cell> nonPathedCells, List<Cell> pathedCells) {
+            for (var index = 0; index < nonPathedCells.Count; index++) {
+                var cell = nonPathedCells[index];
+                if (cell.GetIsInPath()) {
+                    pathedCells.Add(cell);
+                    nonPathedCells.RemoveAt(index);
+                    index--;
+                }
+            }
+        }
+
+        private bool CreatePathThroughMaze(Cell chosenStartCell, Cell chosenEndCell) {
+            if (!DoesAvailablePathExistBetweenCells(chosenStartCell, chosenEndCell)) {
+                return false;
+            }
             startCell.SetIsInPath(true);
             //Start at the start cell, pick a random direction, test if it can be moved to without blocking the path
             //Move to that direction and repeat
-            var currentStartCell = startCell;
+            var currentStartCell = chosenStartCell;
+            var targetEndCell = chosenEndCell;
             var directionsAvailable = new List<int>() { 1, 2, 3, 4 };
             var directionsTried = new List<int>();
-            while (currentStartCell != endCell) {
+            while (currentStartCell != targetEndCell) {
                 if (directionsAvailable.Count == 0) {
                     //No paths to the end available, exit
-                    return;
+                    return false;
                 }
                 //Choose a direction at random
                 var randomDirection = directionsAvailable[random.Next(directionsAvailable.Count)];
@@ -44,7 +97,7 @@ namespace Test.MazeCreation
                 if (randomDirection == 3) directionY = -1;
                 if (randomDirection == 4) directionY = 1;
                 var randomCell = GetCellAtPosition(currentStartCell.GetX() + directionX, currentStartCell.GetY() + directionY);
-                if (randomCell != null && DoesAvailablePathExistBetweenCells(randomCell, endCell)) {
+                if (randomCell != null && DoesAvailablePathExistBetweenCells(randomCell, targetEndCell)) {
                     //Knock down wall between current start cell and random cell, mark it as a path
                     if (directionX == -1) currentStartCell.GetLeftWall().setKnockedDown(true);
                     if (directionX == 1) currentStartCell.GetRightWall().setKnockedDown(true);
@@ -57,6 +110,7 @@ namespace Test.MazeCreation
                     directionsTried = new List<int>();
                 }
             }
+            return true;
         }
 
         //Sets a seed at 0,0 and grows it until it hits boundaries
@@ -176,9 +230,18 @@ namespace Test.MazeCreation
             return new List<Wall>(walls);
         }
 
+        public Cell GetStartingCell() {
+            return startCell;
+        }
+
+        public Cell GetEndingCell()
+        {
+            return endCell;
+        }
+
         public bool DoesAvailablePathExistBetweenCells(Cell cell1, Cell cell2) {
             //Do flood fill algorithm on all cells that aren't in a path
-            List<Cell> travelledCells = new List<Cell>();
+            HashSet<Cell> travelledCells = new HashSet<Cell>();
             List<Cell> cellsToCheck = new List<Cell>();
             cellsToCheck.Add(cell1);
             travelledCells.Add(cell1);
