@@ -19,8 +19,10 @@ public class MazePuzzleNode : Node
 
         var walls = maze.GetWalls();
         foreach (var wall in walls) {
-            MeshCreation.AddWall(surfTool, new Vector3(wall.GetPoint1X(), 0.6f, wall.GetPoint1Y()), 
-                                 new Vector3(wall.GetPoint2X(), 0.6f, wall.GetPoint2Y()), 0.1f, 1.0f);
+            if (!wall.isKnockedDown()) {
+                MeshCreation.AddWall(surfTool, new Vector3(wall.GetPoint1X(), 0.6f, wall.GetPoint1Y()),
+                                     new Vector3(wall.GetPoint2X(), 0.6f, wall.GetPoint2Y()), 0.1f, 1.0f);
+            }
         }
 
         this.AddChild(MeshCreation.CreateMeshInstanceFromMesh(MeshCreation.CreateMeshFromSurfaceTool(surfTool)));

@@ -8,6 +8,7 @@ namespace Test.MazeCreation
         Cell topOrLeftCell = null;
         Cell bottomOrRightCell = null;
         float point1X = 0, point1Y = 0, point2X = 0, point2Y = 0;
+        bool knockedDown = false;
         public Wall(WallDirection direction, Cell topOrLeftCell, Cell bottomOrRightCell, float point1X, float point1Y, float point2X, float point2Y)
         {
             this.direction = direction;
@@ -17,6 +18,12 @@ namespace Test.MazeCreation
             this.point1Y = point1Y;
             this.point2X = point2X;
             this.point2Y = point2Y;
+        }
+        public void setKnockedDown(bool value) {
+            knockedDown = value;
+        }
+        public bool isKnockedDown() {
+            return knockedDown;
         }
         public void setTopOrLeftCell(Cell cell) {
             topOrLeftCell = cell;

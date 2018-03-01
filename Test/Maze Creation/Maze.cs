@@ -10,18 +10,53 @@ namespace Test.MazeCreation
         List<Cell> cells = new List<Cell>();
         List<Vector2> limitPolygon;
         Cell startCell = null, endCell = null;
+        Random random = new Random();
         public Maze(List<Vector2> limitPolygon, Vector2 startPosition, Vector2 endPosition)
         {
             this.limitPolygon = limitPolygon;
             Grow();
             //Set the start and end cells
             startCell = GetClosestCellToPosition(startPosition);
-            endCell = GetClosestCellToPosition(startPosition);
-            CreatePathThroughMaze();
+            endCell = GetClosestCellToPosition(endPosition);
+            CreateMainPathThroughMaze();
         }
 
-        private void CreatePathThroughMaze() {
-            
+        private void CreateMainPathThroughMaze() {
+            startCell.SetIsInPath(true);
+            //Start at the start cell, pick a random direction, test if it can be moved to without blocking the path
+            //Move to that direction and repeat
+            var currentStartCell = startCell;
+            var directionsAvailable = new List<int>() { 1, 2, 3, 4 };
+            var directionsTried = new List<int>();
+            while (currentStartCell != endCell) {
+                if (directionsAvailable.Count == 0) {
+                    //No paths to the end available, exit
+                    return;
+                }
+                //Choose a direction at random
+                var randomDirection = directionsAvailable[random.Next(directionsAvailable.Count)];
+                directionsTried.Add(randomDirection);
+                directionsAvailable.Remove(randomDirection);
+                var directionX = 0;
+                var directionY = 0;
+                if (randomDirection == 1) directionX = -1;
+                if (randomDirection == 2) directionX = 1;
+                if (randomDirection == 3) directionY = -1;
+                if (randomDirection == 4) directionY = 1;
+                var randomCell = GetCellAtPosition(currentStartCell.GetX() + directionX, currentStartCell.GetY() + directionY);
+                if (randomCell != null && DoesAvailablePathExistBetweenCells(randomCell, endCell)) {
+                    //Knock down wall between current start cell and random cell, mark it as a path
+                    if (directionX == -1) currentStartCell.GetLeftWall().setKnockedDown(true);
+                    if (directionX == 1) currentStartCell.GetRightWall().setKnockedDown(true);
+                    if (directionY == -1) currentStartCell.GetBottomWall().setKnockedDown(true);
+                    if (directionY == 1) currentStartCell.GetTopWall().setKnockedDown(true);
+                    randomCell.SetIsInPath(true);
+                    //Set the new cell as the start cell and reset the directions
+                    currentStartCell = randomCell;
+                    directionsAvailable = new List<int>() { 1, 2, 3, 4 };
+                    directionsTried = new List<int>();
+                }
+            }
         }
 
         //Sets a seed at 0,0 and grows it until it hits boundaries
@@ -139,6 +174,48 @@ namespace Test.MazeCreation
                 }
             }
             return new List<Wall>(walls);
+        }
+
+        public bool DoesAvailablePathExistBetweenCells(Cell cell1, Cell cell2) {
+            //Do flood fill algorithm on all cells that aren't in a path
+            List<Cell> travelledCells = new List<Cell>();
+            List<Cell> cellsToCheck = new List<Cell>();
+            cellsToCheck.Add(cell1);
+            travelledCells.Add(cell1);
+            while (cellsToCheck.Count > 0) {
+                //Exit if we hit the end
+                var cell = cellsToCheck[0];
+                cellsToCheck.Remove(cell);
+                if (cell == cell2) {
+                    return true;
+                }
+                //Add the neighbors if the neighbors are not on a path
+                var topCell = cell.GetTopCell();
+                var bottomCell = cell.GetBottomCell();
+                var leftCell = cell.GetLeftCell();
+                var rightCell = cell.GetRightCell();
+                if (topCell != null && !topCell.GetIsInPath() && !travelledCells.Contains(topCell)) {
+                    cellsToCheck.Add(topCell);
+                    travelledCells.Add(topCell);
+                }
+                if (bottomCell != null && !bottomCell.GetIsInPath() && !travelledCells.Contains(bottomCell))
+                {
+                    cellsToCheck.Add(bottomCell);
+                    travelledCells.Add(bottomCell);
+                }
+                if (leftCell != null && !leftCell.GetIsInPath() && !travelledCells.Contains(leftCell))
+                {
+                    cellsToCheck.Add(leftCell);
+                    travelledCells.Add(leftCell);
+                }
+                if (rightCell != null && !rightCell.GetIsInPath() && !travelledCells.Contains(rightCell))
+                {
+                    cellsToCheck.Add(rightCell);
+                    travelledCells.Add(rightCell);
+                }
+            }
+
+            return false;
         }
     }
 }

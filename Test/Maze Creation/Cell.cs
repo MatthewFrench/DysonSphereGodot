@@ -8,6 +8,7 @@ namespace Test.MazeCreation
         Maze maze = null;
         Cell leftCell = null, rightCell = null, topCell = null, bottomCell = null;
         Wall leftWall = null, rightWall = null, topWall = null, bottomWall = null;
+        bool isInPath = false;
         int x = 0, y = 0;
         List<Vector2> polygonShape = new List<Vector2>();
         public Cell(Maze maze, int x, int y)
@@ -19,6 +20,12 @@ namespace Test.MazeCreation
             this.polygonShape.Add(new Vector2(this.x - 0.5f, this.y + 0.5f));
             this.polygonShape.Add(new Vector2(this.x + 0.5f, this.y + 0.5f));
             this.polygonShape.Add(new Vector2(this.x + 0.5f, this.y - 0.5f));
+        }
+        public void SetIsInPath(bool value) {
+            isInPath = value;
+        }
+        public bool GetIsInPath() {
+            return isInPath;
         }
         public List<Vector2> getPolygon() {
             return polygonShape;

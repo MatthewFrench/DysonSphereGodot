@@ -21,6 +21,9 @@
     <Compile Include="..\Maze Creation\Wall.cs">
       <Link>Wall.cs</Link>
     </Compile>
+    <Compile Include="..\Utility\ShapeGeometry.cs">
+      <Link>ShapeGeometry.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GodotSharp">
