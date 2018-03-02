@@ -13,11 +13,11 @@ namespace Test.MeshUtilities
             surfTool.Begin(Mesh.PrimitiveType.Triangles);
             if (material == null) {
                 material = new SpatialMaterial();
-                material.SetEmission(new Color(1.0f, 0.0f, 0.0f));
-                material.SetEmissionEnergy(0.5f);
+                //material.SetEmission(new Color(1.0f, 0.0f, 0.0f));
+                //material.SetEmissionEnergy(0.5f);
                 material.SetAlbedo(new Color(0.5f, 0.0f, 0.0f));
-                material.SetMetallic(0.5f);
-                material.SetCullMode(SpatialMaterial.CullMode.Disabled);
+                //material.SetMetallic(0.5f);
+                material.SetCullMode(SpatialMaterial.CullMode.Back);
             }
             surfTool.SetMaterial(material);
             return surfTool;
@@ -37,7 +37,7 @@ namespace Test.MeshUtilities
         public static MeshInstance CreateMeshInstanceFromMesh(ArrayMesh mesh) {
             var meshInstance = new MeshInstance();
             meshInstance.SetMesh(mesh);
-            meshInstance.SetCastShadowsSetting(GeometryInstance.ShadowCastingSetting.DoubleSided);
+            //meshInstance.SetCastShadowsSetting(GeometryInstance.ShadowCastingSetting.On);
 
             meshInstance.CreateTrimeshCollision();
 
@@ -91,7 +91,7 @@ namespace Test.MeshUtilities
                     wallPoint1LeftBottom,
                     wallPoint1LeftTop,
                     wallPoint1RightTop,
-                    wallPoint1RightBottom);
+                    wallPoint1RightBottom, true);
 
             //Add bottom wall
             AddQuad(surfTool,
@@ -105,21 +105,21 @@ namespace Test.MeshUtilities
                     wallPoint1LeftTop,
                     wallPoint2LeftTop,
                     wallPoint2RightTop,
-                    wallPoint1RightTop);
+                    wallPoint1RightTop, true);
 
             //Add left wall
             AddQuad(surfTool,
                     wallPoint1LeftBottom,
                     wallPoint1LeftTop,
                     wallPoint2LeftTop,
-                    wallPoint2LeftBottom);
+                    wallPoint2LeftBottom, false);
 
             //Add right wall
             AddQuad(surfTool,
                     wallPoint1RightBottom,
                     wallPoint1RightTop,
                     wallPoint2RightTop,
-                    wallPoint2RightBottom);
+                    wallPoint2RightBottom, true);
 
             //Add point 2 back wall
             AddQuad(surfTool,
@@ -130,23 +130,34 @@ namespace Test.MeshUtilities
         }
 
         //Adds a quad to the surface tool.
-        public static void AddQuad(SurfaceTool surfTool, Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4)
+        public static void AddQuad(SurfaceTool surfTool, Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, bool reverse = false)
         {
-            AddTriangle(surfTool, point4, point1, point2);
-            AddTriangle(surfTool, point2, point3, point4);
+            AddTriangle(surfTool, point4, point1, point2, reverse);
+            AddTriangle(surfTool, point2, point3, point4, reverse);
         }
 
         //Adds a triangle to a surface tool.
-        public static void AddTriangle(SurfaceTool surfTool, Vector3 point1, Vector3 point2, Vector3 point3)
+        public static void AddTriangle(SurfaceTool surfTool, Vector3 point1, Vector3 point2, Vector3 point3, bool reverse = false)
         {
-            surfTool.AddUv(new Vector2(0, 0));
-            surfTool.AddVertex(point1);
+            if (reverse) {
+                surfTool.AddUv(new Vector2(0, 0));
+                surfTool.AddVertex(point1);
 
-            surfTool.AddUv(new Vector2(0, 0));
-            surfTool.AddVertex(point2);
+                surfTool.AddUv(new Vector2(0, 0));
+                surfTool.AddVertex(point2);
 
-            surfTool.AddUv(new Vector2(0, 0));
-            surfTool.AddVertex(point3);
+                surfTool.AddUv(new Vector2(0, 0));
+                surfTool.AddVertex(point3);
+            } else {
+                surfTool.AddUv(new Vector2(0, 0));
+                surfTool.AddVertex(point3);
+
+                surfTool.AddUv(new Vector2(0, 0));
+                surfTool.AddVertex(point2);
+
+                surfTool.AddUv(new Vector2(0, 0));
+                surfTool.AddVertex(point1);
+            }
         }
     }
 }

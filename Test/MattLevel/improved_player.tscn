@@ -472,8 +472,7 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 
 [node name="head" type="MeshInstance" parent="." index="3"]
 
-editor/display_folded = true
-transform = Transform( 0.1, 0, 0, 0, 0.105718, 0, 0, 0, 0.1, 0, 1.18456, 0 )
+transform = Transform( 0.1, 0, 1.86265e-08, 0, 0.105718, 0, -1.86265e-08, 0, 0.1, 0, 1.18456, 0 )
 visible = false
 layers = 1
 material_override = null
@@ -569,7 +568,6 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 
 [node name="yaw" type="Spatial" parent="." index="7"]
 
-editor/display_folded = true
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 _sections_unfolded = [ "Transform" ]
 
@@ -587,7 +585,7 @@ current = false
 fov = 70.0
 size = 1.0
 near = 0.05
-far = 100.0
+far = 1000.0
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="ray" type="RayCast" parent="yaw/Camera" index="0"]

@@ -6861,14 +6861,40 @@
         </member>
         <member name="M:Godot.Control.CanDropData(Godot.Vector2,System.Object)">
             <summary>
+            Godot calls this method to test if [code]data[/code] from a control's [method get_drag_data] can be dropped at [code]position[/code]. [code]position[/code] is local to this control.
+            This method should only be used to test the data. Process the data in [method drop_data].
+            [codeblock]
+            extends Control
+            func can_drop_data(position, data):
+            # check position if it is relevant to you
+            # otherwise just check data
+            return typeof(data) == TYPE_DICTIONARY and data.has('expected')
+            [/codeblock]
             </summary>
         </member>
         <member name="M:Godot.Control.DropData(Godot.Vector2,System.Object)">
             <summary>
+            Godot calls this method to pass you the [code]data[/code] from a control's [method get_drag_data] result. Godot first calls [method can_drop_data] to test if [code]data[/code] is allowed to drop at [code]position[/code] where [code]position[/code] is local to this control.
+            [codeblock]
+            extends ColorRect
+            func can_drop_data(position, data):
+            return typeof(data) == TYPE_DICTIONARY and data.has('color')
+            func drop_data(position, data):
+            color = data['color']
+            [/codeblock]
             </summary>
         </member>
         <member name="M:Godot.Control.GetDragData(Godot.Vector2)">
             <summary>
+            Godot calls this method to get data that can be dragged and dropped onto controls that expect drop data. Return null if there is no data to drag. Controls that want to recieve drop data should implement [method can_drop_data] and [method drop_data]. [code]position[/code] is local to this control. Drag may be forced with [method force_drag].
+            A preview that will follow the mouse that should represent the data can be set with [method set_drag_preview]. A good time to set the preview is in this method.
+            [codeblock]
+            extends Control
+            func get_drag_data(position):
+            var mydata = make_data()
+            set_drag_preview(make_preview(mydata))
+            return mydata
+            [/codeblock]
             </summary>
         </member>
         <member name="M:Godot.Control.HasPoint(Godot.Vector2)">
@@ -7089,6 +7115,8 @@
         </member>
         <member name="M:Godot.Control.ForceDrag(System.Object,Godot.Control)">
             <summary>
+            Forces drag and bypasses [method get_drag_data] and [method set_drag_preview] by passing [code]data[/code] and [code]preview[/code]. Drag will start even if the mouse is neither over nor pressed on this control.
+            The methods [method can_drop_data] and [method drop_data] must be implemented on controls that want to recieve drop data.
             </summary>
         </member>
         <member name="M:Godot.Control.GrabClickFocus">
@@ -7097,10 +7125,30 @@
         </member>
         <member name="M:Godot.Control.SetDragForwarding(Godot.Control)">
             <summary>
+            Forwards the handling of this control's drag and drop to [code]target[/code] control.
+            Forwarding can be implemented in the target control similar to the methods [method get_drag_data], [method can_drop_data], and [method drop_data] but with two differences:
+            1. The function name must be suffixed with [b]_fw[/b]
+            2. The function must take an extra argument that is the control doing the forwarding
+            [codeblock]
+            # ThisControl.gd
+            extends Control
+            func _ready():
+            set_drag_forwarding(target_control)
+            # TargetControl.gd
+            extends Control
+            func can_drop_data_fw(position, data, from_control):
+            return true
+            func drop_data_fw(position, data, from_control):
+            my_handle_data(data)
+            func get_drag_data_fw(position, from_control):
+            set_drag_preview(my_preview)
+            return my_data()
+            [/codeblock]
             </summary>
         </member>
         <member name="M:Godot.Control.SetDragPreview(Godot.Control)">
             <summary>
+            Shows the given control at the mouse pointer. A good time to call this method is in [method get_drag_data].
             </summary>
         </member>
         <member name="M:Godot.Control.WarpMouse(Godot.Vector2)">
@@ -16078,6 +16126,11 @@
             </summary>
         </member>
         <member name="M:Godot.PhysicsDirectBodyState.ApplyTorqeImpulse(Godot.Vector3)">
+            <summary>
+            This method is deprecated. Please use [method apply_torque_impulse] instead.
+            </summary>
+        </member>
+        <member name="M:Godot.PhysicsDirectBodyState.ApplyTorqueImpulse(Godot.Vector3)">
             <summary>
             </summary>
         </member>

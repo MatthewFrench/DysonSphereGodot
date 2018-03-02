@@ -28,8 +28,8 @@ public class MyNode : Node
         var sphereMeshScene = (PackedScene)ResourceLoader.Load("res://SphereMesh.tscn");
         var greenSphereMeshScene = (PackedScene)ResourceLoader.Load("res://GreenSphereMesh.tscn");
         var redSphereMeshScene = (PackedScene)ResourceLoader.Load("res://RedSphereMesh.tscn");
-        var hexagonTestScene = (PackedScene)ResourceLoader.Load("res://Hexagon Test.tscn");
-        var pentagonTestScene = (PackedScene)ResourceLoader.Load("res://Pentagon Test.tscn");
+        var hexagonTestScene = (PackedScene)ResourceLoader.Load("res://MattLevel/Hexagon.tscn");
+        var pentagonTestScene = (PackedScene)ResourceLoader.Load("res://MattLevel/Main.tscn"); //Pentagon, Main
         var numberOfTiles = h.GetTiles().Count;
         //Create all the tiles
         foreach (var tile in h.GetTiles()) {
@@ -38,7 +38,7 @@ public class MyNode : Node
         //Create the line mesh
         foreach (var tile in h2.GetTiles())
         {
-            //CreateMesh(tile, sphereMeshScene, greenSphereMeshScene, h2.GetTiles().Count, radius*0.99f);
+            CreateMesh(tile, sphereMeshScene, greenSphereMeshScene, h2.GetTiles().Count, radius*0.99f);
         }
     }
 
@@ -77,11 +77,6 @@ public class MyNode : Node
         }
         polygonRadius = polygonRadius / points.Count;
 
-        //var polygonRotation = firstPoint.AngleTo(tileCenterPoint);
-        //GD.Print("First Point Radians: " + polygonRotation);
-        //GD.Print("First Point Degrees: " + Math.Round(polygonRotation * 180 / Math.PI));
-
-
         var sphereCenterPoint = new Vector3(0f, 0f, 0f);
 
         //Create the tile instance
@@ -115,37 +110,10 @@ public class MyNode : Node
             groundTest.Rotate(axis, (float)(Math.PI / 2.0));
             //Get the local axis of the instance
             var axis2 = groundTest.GetTransform().basis.Xform(new Vector3(0, 1, 0)).Normalized();
-            //Rotate it to match up with other parts of the sphere
-            //groundTest.Rotate(axis2, (float)(30.0 / 180.0 * Math.PI - polygonRotation));
-            //groundTest.Rotate(axis2, -polygonRotation);
             //Add ground to world
             this.AddChild(groundTest);
             this.hexInstances.Add(groundTest);
 
-            /*
-             * First half of solution1, seems to work fairly well
-             * 
-            //Play around with getting the tile information
-            var testVector = groundTest.ToLocal(firstPoint);
-            GD.Print("First Point: " + firstPoint);
-            GD.Print("Local First Point: " + testVector);
-            //Now try to find rotation of the point
-            var testVector2D = new Vector2(testVector.x, testVector.z);
-            var angle = testVector2D.AngleToPoint(new Vector2(0, (float)polygonRadius));
-            //Now test rotating - This appears to be correct
-            groundTest.Rotate(axis2, angle);
-            //Polygon isn't corrected for the original rotation
-            GD.Print("Rotated by angle " + (angle * 180 / Math.PI));
-            */
-
-            //Idea:
-            /*
-             * Create original point at (0,0,polygonRadius)
-             * Do node.ToWorld(point)
-             * Now we have two points in the world
-             * Can we get the rotation from world point 1 to world point 2 relative to center
-             * and apply it ot the node?
-             */
             //Create and convert local point to world point
             var localOriginalFirstPoint = new Vector3(0, 0, (float)polygonRadius);
             var worldOriginalFirstPoint = groundTest.ToGlobal(localOriginalFirstPoint);
@@ -164,9 +132,11 @@ public class MyNode : Node
 
             var angle = angleCalcFirstPoint.AngleTo(angleCalcOriginalPoint);
             var angle2 = new Vector2(localGeneratedFirstPoint.x, localGeneratedFirstPoint.z).AngleTo(new Vector2(localOriginalFirstPoint.x, localOriginalFirstPoint.z));
-            //Todo: Try converting the points to 2D first because they're already local
 
             var axis3 = groundTest.GetTransform().basis.Xform(new Vector3(0, 1, 0));
+            if (points.Count == 5) {
+                angle2 += (float)Math.PI / 4;
+            }
             //angleCalcFirstPoint.
             //Rotate it to match up with other parts of the sphere
             groundTest.Rotate(axis3, angle2);

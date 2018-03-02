@@ -21,8 +21,8 @@ public class MazePuzzleNode : Node
         var walls = maze.GetWalls();
         foreach (var wall in walls) {
             if (!wall.isKnockedDown()) {
-                MeshCreation.AddWall(surfTool, new Vector3(wall.GetPoint1X(), 0.6f, wall.GetPoint1Y()),
-                                     new Vector3(wall.GetPoint2X(), 0.6f, wall.GetPoint2Y()), 0.1f, 1.0f);
+                MeshCreation.AddWall(surfTool, new Vector3(wall.GetPoint1X(), 0.0f, wall.GetPoint1Y()),
+                                     new Vector3(wall.GetPoint2X(), 0.0f, wall.GetPoint2Y()), 0.1f, 2.0f);
             }
         }
 
@@ -30,10 +30,10 @@ public class MazePuzzleNode : Node
 
         KinematicBody player = (KinematicBody)this.GetParent().GetNode("player");
         var startingCell = maze.GetStartingCell();
-        player.SetTranslation(new Vector3(startingCell.GetX(), 0.6f, startingCell.GetY()));
+        player.SetTranslation(new Vector3(startingCell.GetX(), 0.0f, startingCell.GetY()));
 
         Spatial flag = (Spatial)this.GetParent().GetNode("Flag");
         var endingCell = maze.GetEndingCell();
-        flag.SetTranslation(new Vector3(endingCell.GetX(), 0.6f, endingCell.GetY()));
+        flag.SetTranslation(new Vector3(endingCell.GetX(), 0.0f, endingCell.GetY()));
     }
 }
