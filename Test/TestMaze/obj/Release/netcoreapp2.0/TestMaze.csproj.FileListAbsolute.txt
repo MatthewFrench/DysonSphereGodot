@@ -1,0 +1,16 @@
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/TestMaze.deps.json
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/TestMaze.runtimeconfig.json
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/TestMaze.runtimeconfig.dev.json
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/TestMaze.dll
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/TestMaze.pdb
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/GodotSharp.dll
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/GodotSharpEditor.dll
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/GodotSharp.pdb
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/GodotSharp.xml
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/GodotSharpEditor.pdb
+/Users/matt/DysonSphereGodot/Test/TestMaze/bin/Release/netcoreapp2.0/GodotSharpEditor.xml
+/Users/matt/DysonSphereGodot/Test/TestMaze/obj/Release/netcoreapp2.0/TestMaze.csproj.CoreCompileInputs.cache
+/Users/matt/DysonSphereGodot/Test/TestMaze/obj/Release/netcoreapp2.0/TestMaze.AssemblyInfoInputs.cache
+/Users/matt/DysonSphereGodot/Test/TestMaze/obj/Release/netcoreapp2.0/TestMaze.AssemblyInfo.cs
+/Users/matt/DysonSphereGodot/Test/TestMaze/obj/Release/netcoreapp2.0/TestMaze.dll
+/Users/matt/DysonSphereGodot/Test/TestMaze/obj/Release/netcoreapp2.0/TestMaze.pdb

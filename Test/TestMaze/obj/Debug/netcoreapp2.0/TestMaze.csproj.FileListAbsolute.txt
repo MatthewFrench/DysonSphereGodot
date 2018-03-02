@@ -14,3 +14,4 @@
 /Users/matt/DysonSphereGodot/Test/TestMaze/obj/Debug/netcoreapp2.0/TestMaze.AssemblyInfo.cs
 /Users/matt/DysonSphereGodot/Test/TestMaze/obj/Debug/netcoreapp2.0/TestMaze.dll
 /Users/matt/DysonSphereGodot/Test/TestMaze/obj/Debug/netcoreapp2.0/TestMaze.pdb
+/Users/matt/DysonSphereGodot/Test/TestMaze/obj/Debug/netcoreapp2.0/TestMaze.csprojResolveAssemblyReference.cache

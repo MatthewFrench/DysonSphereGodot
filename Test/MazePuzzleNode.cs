@@ -12,7 +12,8 @@ public class MazePuzzleNode : Node
 
     public override void _Ready()
     {
-        maze = new Maze(ShapeGeometry.MakePolygon(6, 21, (float)Math.PI/2), new Vector2(-21, -21), new Vector2(21, 21));
+        maze = new Maze(ShapeGeometry.MakePolygon(6, 21, (float)Math.PI/2), 
+                        new Vector2(-21, -21), new Vector2(21, 21));
         //maze = new Maze(ShapeGeometry.MakeStar(12, 21, (float)Math.PI / 2), new Vector2(-21, -21), new Vector2(21, 21));
 
         //Draw cells to single mesh and apply to screen
@@ -28,10 +29,12 @@ public class MazePuzzleNode : Node
 
         this.AddChild(MeshCreation.CreateMeshInstanceFromMesh(MeshCreation.CreateMeshFromSurfaceTool(surfTool)));
 
+        //Put players at start
         KinematicBody player = (KinematicBody)this.GetParent().GetNode("player");
         var startingCell = maze.GetStartingCell();
         player.SetTranslation(new Vector3(startingCell.GetX(), 0.0f, startingCell.GetY()));
 
+        //Put flag at end
         Spatial flag = (Spatial)this.GetParent().GetNode("Flag");
         var endingCell = maze.GetEndingCell();
         flag.SetTranslation(new Vector3(endingCell.GetX(), 0.0f, endingCell.GetY()));

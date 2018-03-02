@@ -106,6 +106,7 @@ namespace Test.MazeCreation
                     randomCell.SetIsInPath(true);
                     //Set the new cell as the start cell and reset the directions
                     currentStartCell = randomCell;
+                    //TODO Replace directions list with boolean to increase speed
                     directionsAvailable = new List<int>() { 1, 2, 3, 4 };
                     directionsTried = new List<int>();
                 }
