@@ -1,19 +1,19 @@
 ﻿<Properties StartupConfiguration="{180A8D37-2CE5-4383-85A0-9C65D23EE265}|Default">
   <MonoDevelop.Ide.ItemProperties.Run PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MyNode.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Maze Creation/Maze.cs">
     <Files>
-      <File FileName="MyNode.cs" Line="32" Column="87" />
+      <File FileName="MyNode.cs" Line="50" Column="9" />
       <File FileName="TestRun.cs" Line="4" Column="19" />
       <File FileName="Run/Program.cs" Line="13" Column="57" />
-      <File FileName="MazePuzzleNode.cs" Line="1" Column="1" />
+      <File FileName="MazePuzzleNode.cs" Line="15" Column="22" />
       <File FileName="Hexasphere.cs" Line="1" Column="1" />
       <File FileName="Mesh Creation/MeshCreation.cs" Line="149" Column="51" />
       <File FileName="Maze Creation/Cell.cs" Line="13" Column="58" />
-      <File FileName="Maze Creation/Maze.cs" Line="16" Column="46" />
+      <File FileName="Maze Creation/Maze.cs" Line="245" Column="61" />
       <File FileName="Utility/Intersection.cs" Line="60" Column="95" />
       <File FileName="Maze Creation/Wall.cs" Line="18" Column="36" />
       <File FileName="Face.cs" Line="1" Column="1" />
-      <File FileName="TestMaze/Program.cs" Line="21" Column="6" />
+      <File FileName="TestMaze/Program.cs" Line="30" Column="1" />
       <File FileName="Utility/ShapeGeometry.cs" Line="26" Column="43" />
     </Files>
   </MonoDevelop.Ide.Workbench>

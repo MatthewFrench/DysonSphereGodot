@@ -32,11 +32,11 @@ public class MazePuzzleNode : Node
         //Put players at start
         KinematicBody player = (KinematicBody)this.GetParent().GetNode("player");
         var startingCell = maze.GetStartingCell();
-        player.SetTranslation(new Vector3(startingCell.GetX(), 0.0f, startingCell.GetY()));
+        player.SetTranslation(new Vector3(startingCell.X, 0.0f, startingCell.Y));
 
         //Put flag at end
         Spatial flag = (Spatial)this.GetParent().GetNode("Flag");
         var endingCell = maze.GetEndingCell();
-        flag.SetTranslation(new Vector3(endingCell.GetX(), 0.0f, endingCell.GetY()));
+        flag.SetTranslation(new Vector3(endingCell.X, 0.0f, endingCell.Y));
     }
 }

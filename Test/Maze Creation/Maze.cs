@@ -21,14 +21,14 @@ namespace Test.MazeCreation
             CreatePathThroughMaze(startCell, endCell);
             CreateRandomMazePaths();
             //Open the end and start of the maze
-            if (startCell.GetLeftCell() == null) startCell.GetLeftWall().setKnockedDown(true);
-            if (startCell.GetRightCell() == null) startCell.GetRightWall().setKnockedDown(true);
-            if (startCell.GetTopCell() == null) startCell.GetTopWall().setKnockedDown(true);
-            if (startCell.GetBottomCell() == null) startCell.GetBottomWall().setKnockedDown(true);
-            if (endCell.GetLeftCell() == null) endCell.GetLeftWall().setKnockedDown(true);
-            if (endCell.GetRightCell() == null) endCell.GetRightWall().setKnockedDown(true);
-            if (endCell.GetTopCell() == null) endCell.GetTopWall().setKnockedDown(true);
-            if (endCell.GetBottomCell() == null) endCell.GetBottomWall().setKnockedDown(true);
+            if (startCell.LeftCell == null) startCell.LeftWall.setKnockedDown(true);
+            if (startCell.RightCell == null) startCell.RightWall.setKnockedDown(true);
+            if (startCell.TopCell == null) startCell.TopWall.setKnockedDown(true);
+            if (startCell.BottomCell == null) startCell.BottomWall.setKnockedDown(true);
+            if (endCell.LeftCell == null) endCell.LeftWall.setKnockedDown(true);
+            if (endCell.RightCell == null) endCell.RightWall.setKnockedDown(true);
+            if (endCell.TopCell == null) endCell.TopWall.setKnockedDown(true);
+            if (endCell.BottomCell == null) endCell.BottomWall.setKnockedDown(true);
         }
 
         private void CreateRandomMazePaths() {
@@ -36,7 +36,7 @@ namespace Test.MazeCreation
             List<Cell> nonPathedCells = new List<Cell>();
             List<Cell> pathedCells = new List<Cell>();
             foreach (Cell cell in cells) {
-                if (!cell.GetIsInPath()) {
+                if (!cell.IsInPath) {
                     nonPathedCells.Add(cell);
                 } else {
                     pathedCells.Add(cell);
@@ -45,8 +45,8 @@ namespace Test.MazeCreation
             //Loop through cells and loop each non-pathed to a pathed
             while (nonPathedCells.Count > 0) {
                 var availableTargets = new List<Cell>(pathedCells);
-                var cell = nonPathedCells[0];
-                nonPathedCells.RemoveAt(0);
+                var cell = nonPathedCells[nonPathedCells.Count - 1];
+                nonPathedCells.RemoveAt(nonPathedCells.Count - 1);
                 pathedCells.Add(cell);
                 var gotPath = false;
                 while (!gotPath && availableTargets.Count > 0) {
@@ -62,7 +62,7 @@ namespace Test.MazeCreation
         private void TransferPathedCellsToNonPathed(List<Cell> nonPathedCells, List<Cell> pathedCells) {
             for (var index = 0; index < nonPathedCells.Count; index++) {
                 var cell = nonPathedCells[index];
-                if (cell.GetIsInPath()) {
+                if (cell.IsInPath) {
                     pathedCells.Add(cell);
                     nonPathedCells.RemoveAt(index);
                     index--;
@@ -74,7 +74,7 @@ namespace Test.MazeCreation
             if (!DoesAvailablePathExistBetweenCells(chosenStartCell, chosenEndCell)) {
                 return false;
             }
-            startCell.SetIsInPath(true);
+            startCell.IsInPath = true;
             //Start at the start cell, pick a random direction, test if it can be moved to without blocking the path
             //Move to that direction and repeat
             var currentStartCell = chosenStartCell;
@@ -96,14 +96,14 @@ namespace Test.MazeCreation
                 if (randomDirection == 2) directionX = 1;
                 if (randomDirection == 3) directionY = -1;
                 if (randomDirection == 4) directionY = 1;
-                var randomCell = GetCellAtPosition(currentStartCell.GetX() + directionX, currentStartCell.GetY() + directionY);
+                var randomCell = GetCellAtPosition(currentStartCell.X + directionX, currentStartCell.Y + directionY);
                 if (randomCell != null && DoesAvailablePathExistBetweenCells(randomCell, targetEndCell)) {
                     //Knock down wall between current start cell and random cell, mark it as a path
-                    if (directionX == -1) currentStartCell.GetLeftWall().setKnockedDown(true);
-                    if (directionX == 1) currentStartCell.GetRightWall().setKnockedDown(true);
-                    if (directionY == -1) currentStartCell.GetBottomWall().setKnockedDown(true);
-                    if (directionY == 1) currentStartCell.GetTopWall().setKnockedDown(true);
-                    randomCell.SetIsInPath(true);
+                    if (directionX == -1) currentStartCell.LeftWall.setKnockedDown(true);
+                    if (directionX == 1) currentStartCell.RightWall.setKnockedDown(true);
+                    if (directionY == -1) currentStartCell.BottomWall.setKnockedDown(true);
+                    if (directionY == 1) currentStartCell.TopWall.setKnockedDown(true);
+                    randomCell.IsInPath = true;
                     //Set the new cell as the start cell and reset the directions
                     currentStartCell = randomCell;
                     //TODO Replace directions list with boolean to increase speed
@@ -128,15 +128,15 @@ namespace Test.MazeCreation
                 var cell = growQueue[0];
                 growQueue.RemoveAt(0);
                 completedQueue.Add(cell);
-                var x = cell.GetX();
-                var y = cell.GetY();
-                if (cell.GetLeftCell() == null) {
+                var x = cell.X;
+                var y = cell.Y;
+                if (cell.LeftCell == null) {
                     var leftCell = CreateNewCellAtIndex(x - 1, y);
                     if (leftCell != null) {
                         growQueue.Add(leftCell);
                     }
                 }
-                if (cell.GetRightCell() == null)
+                if (cell.RightCell == null)
                 {
                     var rightCell = CreateNewCellAtIndex(x + 1, y);
                     if (rightCell != null)
@@ -144,7 +144,7 @@ namespace Test.MazeCreation
                         growQueue.Add(rightCell);
                     }
                 }
-                if (cell.GetTopCell() == null)
+                if (cell.TopCell == null)
                 {
                     var topCell = CreateNewCellAtIndex(x, y + 1);
                     if (topCell != null)
@@ -152,7 +152,7 @@ namespace Test.MazeCreation
                         growQueue.Add(topCell);
                     }
                 }
-                if (cell.GetBottomCell() == null)
+                if (cell.BottomCell == null)
                 {
                     var bottomCell = CreateNewCellAtIndex(x, y - 1);
                     if (bottomCell != null)
@@ -197,8 +197,8 @@ namespace Test.MazeCreation
             float distance = float.MaxValue;
             Cell chosenCell = null;
             foreach (var cell in cells) {
-                var x = cell.GetX() - position.x;
-                var y = cell.GetY() - position.y;
+                var x = cell.X - position.x;
+                var y = cell.Y - position.y;
                 float cellDistance = (float)Math.Sqrt(x * x + y * y);
                 if (distance > cellDistance) {
                     distance = cellDistance;
@@ -212,20 +212,20 @@ namespace Test.MazeCreation
         public List<Wall> GetWalls() {
             var walls = new HashSet<Wall>();
             foreach (var cell in cells) {
-                if (cell.GetLeftWall() != null) {
-                    walls.Add(cell.GetLeftWall());
+                if (cell.LeftWall != null) {
+                    walls.Add(cell.LeftWall);
                 }
-                if (cell.GetRightWall() != null)
+                if (cell.RightWall != null)
                 {
-                    walls.Add(cell.GetRightWall());
+                    walls.Add(cell.RightWall);
                 }
-                if (cell.GetTopWall() != null)
+                if (cell.TopWall != null)
                 {
-                    walls.Add(cell.GetTopWall());
+                    walls.Add(cell.TopWall);
                 }
-                if (cell.GetBottomWall() != null)
+                if (cell.BottomWall != null)
                 {
-                    walls.Add(cell.GetBottomWall());
+                    walls.Add(cell.BottomWall);
                 }
             }
             return new List<Wall>(walls);
@@ -248,31 +248,31 @@ namespace Test.MazeCreation
             travelledCells.Add(cell1);
             while (cellsToCheck.Count > 0) {
                 //Exit if we hit the end
-                var cell = cellsToCheck[0];
-                cellsToCheck.Remove(cell);
+                var cell = cellsToCheck[cellsToCheck.Count - 1];
+                cellsToCheck.RemoveAt(cellsToCheck.Count - 1);
                 if (cell == cell2) {
                     return true;
                 }
                 //Add the neighbors if the neighbors are not on a path
-                var topCell = cell.GetTopCell();
-                var bottomCell = cell.GetBottomCell();
-                var leftCell = cell.GetLeftCell();
-                var rightCell = cell.GetRightCell();
-                if (topCell != null && !topCell.GetIsInPath() && !travelledCells.Contains(topCell)) {
+                var topCell = cell.TopCell;
+                var bottomCell = cell.BottomCell;
+                var leftCell = cell.LeftCell;
+                var rightCell = cell.RightCell;
+                if (topCell != null && !topCell.IsInPath && !travelledCells.Contains(topCell)) {
                     cellsToCheck.Add(topCell);
                     travelledCells.Add(topCell);
                 }
-                if (bottomCell != null && !bottomCell.GetIsInPath() && !travelledCells.Contains(bottomCell))
+                if (bottomCell != null && !bottomCell.IsInPath && !travelledCells.Contains(bottomCell))
                 {
                     cellsToCheck.Add(bottomCell);
                     travelledCells.Add(bottomCell);
                 }
-                if (leftCell != null && !leftCell.GetIsInPath() && !travelledCells.Contains(leftCell))
+                if (leftCell != null && !leftCell.IsInPath && !travelledCells.Contains(leftCell))
                 {
                     cellsToCheck.Add(leftCell);
                     travelledCells.Add(leftCell);
                 }
-                if (rightCell != null && !rightCell.GetIsInPath() && !travelledCells.Contains(rightCell))
+                if (rightCell != null && !rightCell.IsInPath && !travelledCells.Contains(rightCell))
                 {
                     cellsToCheck.Add(rightCell);
                     travelledCells.Add(rightCell);
