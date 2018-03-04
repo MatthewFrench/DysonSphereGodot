@@ -72,6 +72,9 @@
     <Compile Include="Utility\Intersection.cs" />
     <Compile Include="Maze Creation\Wall.cs" />
     <Compile Include="Utility\ShapeGeometry.cs" />
+    <Compile Include="Maze Creation Expensive\Cell.cs" />
+    <Compile Include="Maze Creation Expensive\Maze.cs" />
+    <Compile Include="Maze Creation Expensive\Wall.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -80,6 +83,7 @@
     <Folder Include="Mesh Creation\" />
     <Folder Include="Maze Creation\" />
     <Folder Include="Utility\" />
+    <Folder Include="Maze Creation Expensive\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

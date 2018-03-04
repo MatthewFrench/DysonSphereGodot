@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 using System.Collections.Generic;
-namespace Test.MazeCreation
+namespace Test.MazeCreationExpensive
 {
     public class Cell
     {
@@ -13,16 +13,7 @@ namespace Test.MazeCreation
         public Wall LeftWall = null, RightWall = null, TopWall = null, BottomWall = null;
         public int X = 0, Y = 0;
         public bool IsInPath = false;
-        public int DistanceFromEnd = -1;
-        //Used for distance, creates chains to track for pathing
-        public Cell PastLeftCell = null;
-        public Cell PastRightCell = null;
-        public Cell PastTopCell = null;
-        public Cell PastBottomCell = null;
-        public Cell NextLeftCell = null;
-        public Cell NextRightCell = null;
-        public Cell NextTopCell = null;
-        public Cell NextBottomCell = null;
+        public int DistanceFromEnd;
         public Cell(Maze maze, int x, int y)
         {
             this.maze = maze;

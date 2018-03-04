@@ -17,7 +17,7 @@ namespace TestMaze
             Stopwatch benchmark = new Stopwatch();
             benchmark.Start();
             Maze maze;
-            for (var i = 0; i < 12; i++) {
+            for (var i = 0; i < 100; i++) {
                 maze = new Maze(ShapeGeometry.MakePolygon(6, 21, (float)Math.PI / 2), new Vector2(-21, -21), new Vector2(21, 21));
             }
             benchmark.Stop();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Godot;
 using Test.Utility;
-namespace Test.MazeCreation
+namespace Test.MazeCreationExpensive
 {
     public class Maze
     {
@@ -18,9 +18,8 @@ namespace Test.MazeCreation
             //Set the start and end cells
             startCell = GetClosestCellToPosition(startPosition);
             endCell = GetClosestCellToPosition(endPosition);
-            GenerateInitialCellDistances();
-            //CreatePathThroughMaze(startCell, endCell);
-            //CreateRandomMazePaths();
+            CreatePathThroughMaze(startCell, endCell);
+            CreateRandomMazePaths();
             //Open the end and start of the maze
             if (startCell.LeftCell == null) startCell.LeftWall.setKnockedDown(true);
             if (startCell.RightCell == null) startCell.RightWall.setKnockedDown(true);
@@ -32,73 +31,6 @@ namespace Test.MazeCreation
             if (endCell.BottomCell == null) endCell.BottomWall.setKnockedDown(true);
         }
 
-
-        //Gives each cell a number that is the distance that cell is from the end
-        private void GenerateInitialCellDistances()
-        {
-            startCell.IsInPath = true;
-            endCell.DistanceFromEnd = 0;
-            LinkedList<Cell> cellsToTouch = new LinkedList<Cell>();
-            cellsToTouch.AddFirst(endCell);
-
-            while (cellsToTouch.Count > 0)
-            {
-                var cell = cellsToTouch.First.Value;
-                cellsToTouch.RemoveFirst();
-                //Set this cell count to the smallest distance from neighbor + 1.
-                //Then add all neighbors to touch that are -1 or greater than this distance + 1.
-                var leftCell = cell.LeftCell;
-                var rightCell = cell.RightCell;
-                var topCell = cell.TopCell;
-                var bottomCell = cell.BottomCell;
-                var neighborDistance = cell.DistanceFromEnd + 1;
-                //Add all neighbors to update
-                if (leftCell != null && (leftCell.DistanceFromEnd == -1 || leftCell.DistanceFromEnd > neighborDistance)/* && !leftCell.IsInPath*/)
-                {
-                    AddCellToOrderedDistanceLinkedList(cellsToTouch, leftCell, neighborDistance);
-                    leftCell.DistanceFromEnd = neighborDistance;
-                }
-                if (rightCell != null && (rightCell.DistanceFromEnd == -1 || rightCell.DistanceFromEnd > neighborDistance)/* && !rightCell.IsInPath*/)
-                {
-                    AddCellToOrderedDistanceLinkedList(cellsToTouch, rightCell, neighborDistance);
-                    rightCell.DistanceFromEnd = neighborDistance;
-                }
-                if (topCell != null && (topCell.DistanceFromEnd == -1 || topCell.DistanceFromEnd > neighborDistance)/* && !topCell.IsInPath*/)
-                {
-                    AddCellToOrderedDistanceLinkedList(cellsToTouch, topCell, neighborDistance);
-                    topCell.DistanceFromEnd = neighborDistance;
-                }
-                if (bottomCell != null && (bottomCell.DistanceFromEnd == -1 || bottomCell.DistanceFromEnd > neighborDistance)/* && !bottomCell.IsInPath*/)
-                {
-                    AddCellToOrderedDistanceLinkedList(cellsToTouch, bottomCell, neighborDistance);
-                    bottomCell.DistanceFromEnd = neighborDistance;
-                }
-            }
-        }
-
-        //Adds a cell to the linked list at the distance
-        public static void AddCellToOrderedDistanceLinkedList(LinkedList<Cell> linkedList, Cell cell, int distance)
-        {
-            LinkedListNode<Cell> currentLink = linkedList.First;
-            while (currentLink != null)
-            {
-                if (currentLink.Value.DistanceFromEnd > distance)
-                {
-                    linkedList.AddBefore(currentLink, cell);
-                    return;
-                }
-                currentLink = currentLink.Next;
-            }
-            linkedList.AddLast(cell);
-        }
-
-        private void UpdatedCellAsPath(Cell cell)
-        {
-            //Update every cell around this cell
-
-        }
-
-        /*
         private void CreateRandomMazePaths() {
             //Make a list of non-pathed cells
             List<Cell> nonPathedCells = new List<Cell>();
@@ -136,9 +68,8 @@ namespace Test.MazeCreation
                     index--;
                 }
             }
-        }*/
+        }
 
-        /*
         private bool CreatePathThroughMaze(Cell chosenStartCell, Cell chosenEndCell) {
             if (!DoesAvailablePathExistBetweenCells(chosenStartCell, chosenEndCell)) {
                 return false;
@@ -182,32 +113,26 @@ namespace Test.MazeCreation
             }
             return true;
         }
-        */
 
         //Sets a seed at 0,0 and grows it until it hits boundaries
-        private void Grow()
-        {
+        private void Grow() {
             //Place a tile in the center and grow it until it hits the limit polygon.
             var centerCell = CreateNewCellAtIndex(0, 0);
-            if (centerCell == null)
-            {
+            if (centerCell == null) {
                 return;
             }
             var completedQueue = new HashSet<Cell>();
             var growQueue = new List<Cell>();
             growQueue.Add(centerCell);
-            while (growQueue.Count > 0)
-            {
+            while (growQueue.Count > 0) {
                 var cell = growQueue[0];
                 growQueue.RemoveAt(0);
                 completedQueue.Add(cell);
                 var x = cell.X;
                 var y = cell.Y;
-                if (cell.LeftCell == null)
-                {
+                if (cell.LeftCell == null) {
                     var leftCell = CreateNewCellAtIndex(x - 1, y);
-                    if (leftCell != null)
-                    {
+                    if (leftCell != null) {
                         growQueue.Add(leftCell);
                     }
                 }
@@ -240,15 +165,12 @@ namespace Test.MazeCreation
 
         //Returns a cell if it exists or is created
         //Exists null if the cell cannot be created because of boundaries
-        public Cell CreateNewCellAtIndex(int x, int y)
-        {
-            if (GetCellAtPosition(x, y) != null)
-            {
+        public Cell CreateNewCellAtIndex(int x, int y) {
+            if (GetCellAtPosition(x, y) != null) {
                 return GetCellAtPosition(x, y);
             }
             var cell = new Cell(this, x, y);
-            if (Intersection.DoPolygonsIntersect(this.limitPolygon, cell.getPolygon()))
-            {
+            if (Intersection.DoPolygonsIntersect(this.limitPolygon, cell.getPolygon())) {
                 return null;
             }
             cell.SetLeftCell(GetCellAtPosition(x - 1, y));
@@ -262,43 +184,35 @@ namespace Test.MazeCreation
         }
 
         //Gets a cell at an exact position
-        public Cell GetCellAtPosition(int x, int y)
-        {
+        public Cell GetCellAtPosition(int x, int y) {
             var key = new Tuple<int, int>(x, y);
-            if (cellMap.ContainsKey(key))
-            {
+            if (cellMap.ContainsKey(key)) {
                 return cellMap[key];
             }
             return null;
         }
 
         //Gets a cell at the closest position
-        public Cell GetClosestCellToPosition(Vector2 position)
-        {
+        public Cell GetClosestCellToPosition(Vector2 position) {
             float distance = float.MaxValue;
             Cell chosenCell = null;
-            foreach (var cell in cells)
-            {
+            foreach (var cell in cells) {
                 var x = cell.X - position.x;
                 var y = cell.Y - position.y;
                 float cellDistance = (float)Math.Sqrt(x * x + y * y);
-                if (distance > cellDistance)
-                {
+                if (distance > cellDistance) {
                     distance = cellDistance;
                     chosenCell = cell;
-                }
+                } 
             }
             return chosenCell;
         }
 
         //Returns the list of walls in the maze.
-        public List<Wall> GetWalls()
-        {
+        public List<Wall> GetWalls() {
             var walls = new HashSet<Wall>();
-            foreach (var cell in cells)
-            {
-                if (cell.LeftWall != null)
-                {
+            foreach (var cell in cells) {
+                if (cell.LeftWall != null) {
                     walls.Add(cell.LeftWall);
                 }
                 if (cell.RightWall != null)
@@ -317,8 +231,7 @@ namespace Test.MazeCreation
             return new List<Wall>(walls);
         }
 
-        public Cell GetStartingCell()
-        {
+        public Cell GetStartingCell() {
             return startCell;
         }
 
@@ -326,7 +239,6 @@ namespace Test.MazeCreation
         {
             return endCell;
         }
-        /*
         public static int floodFills = 0;
         public bool DoesAvailablePathExistBetweenCells(Cell cell1, Cell cell2) {
             floodFills++;
@@ -387,6 +299,5 @@ namespace Test.MazeCreation
 
             return false;
         }
-        */
     }
 }
