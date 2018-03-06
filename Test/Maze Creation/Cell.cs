@@ -3,6 +3,7 @@ using Godot;
 using System.Collections.Generic;
 namespace Test.MazeCreation
 {
+    
     public class Cell
     {
         Maze maze = null;
@@ -14,15 +15,18 @@ namespace Test.MazeCreation
         public int X = 0, Y = 0;
         public bool IsInPath = false;
         public int DistanceFromEnd = -1;
+        public bool HasPathToEnd = false;
         //Used for distance, creates chains to track for pathing
-        public Cell PastLeftCell = null;
-        public Cell PastRightCell = null;
-        public Cell PastTopCell = null;
-        public Cell PastBottomCell = null;
-        public Cell NextLeftCell = null;
-        public Cell NextRightCell = null;
-        public Cell NextTopCell = null;
-        public Cell NextBottomCell = null;
+        /*
+        public bool LeftFlowsDeeper = null;
+        public bool PastRightCell = null;
+        public bool PastTopCell = null;
+        public bool PastBottomCell = null;
+        public bool NextLeftCell = null;
+        public bool NextRightCell = null;
+        public bool NextTopCell = null;
+        public bool NextBottomCell = null;
+        */
         public Cell(Maze maze, int x, int y)
         {
             this.maze = maze;

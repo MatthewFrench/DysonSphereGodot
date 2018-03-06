@@ -21,7 +21,7 @@ public class MazePuzzleNode : Node
 
         var walls = maze.GetWalls();
         foreach (var wall in walls) {
-            if (!wall.isKnockedDown()) {
+            if (!wall.KnockedDown) {
                 MeshCreation.AddWall(surfTool, new Vector3(wall.GetPoint1X(), 0.0f, wall.GetPoint1Y()),
                                      new Vector3(wall.GetPoint2X(), 0.0f, wall.GetPoint2Y()), 0.1f, 2.0f);
             }

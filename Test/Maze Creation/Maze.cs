@@ -19,17 +19,18 @@ namespace Test.MazeCreation
             startCell = GetClosestCellToPosition(startPosition);
             endCell = GetClosestCellToPosition(endPosition);
             GenerateInitialCellDistances();
+            CreateMainPathThroughMaze();
             //CreatePathThroughMaze(startCell, endCell);
             //CreateRandomMazePaths();
             //Open the end and start of the maze
-            if (startCell.LeftCell == null) startCell.LeftWall.setKnockedDown(true);
-            if (startCell.RightCell == null) startCell.RightWall.setKnockedDown(true);
-            if (startCell.TopCell == null) startCell.TopWall.setKnockedDown(true);
-            if (startCell.BottomCell == null) startCell.BottomWall.setKnockedDown(true);
-            if (endCell.LeftCell == null) endCell.LeftWall.setKnockedDown(true);
-            if (endCell.RightCell == null) endCell.RightWall.setKnockedDown(true);
-            if (endCell.TopCell == null) endCell.TopWall.setKnockedDown(true);
-            if (endCell.BottomCell == null) endCell.BottomWall.setKnockedDown(true);
+            if (startCell.LeftCell == null) startCell.LeftWall.KnockedDown = true;
+            if (startCell.RightCell == null) startCell.RightWall.KnockedDown = true;
+            if (startCell.TopCell == null) startCell.TopWall.KnockedDown = true;
+            if (startCell.BottomCell == null) startCell.BottomWall.KnockedDown = true;
+            if (endCell.LeftCell == null) endCell.LeftWall.KnockedDown = true;
+            if (endCell.RightCell == null) endCell.RightWall.KnockedDown = true;
+            if (endCell.TopCell == null) endCell.TopWall.KnockedDown = true;
+            if (endCell.BottomCell == null) endCell.BottomWall.KnockedDown = true;
         }
 
 
@@ -38,6 +39,7 @@ namespace Test.MazeCreation
         {
             startCell.IsInPath = true;
             endCell.DistanceFromEnd = 0;
+            endCell.HasPathToEnd = true;
             LinkedList<Cell> cellsToTouch = new LinkedList<Cell>();
             cellsToTouch.AddFirst(endCell);
 
@@ -57,21 +59,25 @@ namespace Test.MazeCreation
                 {
                     AddCellToOrderedDistanceLinkedList(cellsToTouch, leftCell, neighborDistance);
                     leftCell.DistanceFromEnd = neighborDistance;
+                    leftCell.HasPathToEnd = true;
                 }
                 if (rightCell != null && (rightCell.DistanceFromEnd == -1 || rightCell.DistanceFromEnd > neighborDistance)/* && !rightCell.IsInPath*/)
                 {
                     AddCellToOrderedDistanceLinkedList(cellsToTouch, rightCell, neighborDistance);
                     rightCell.DistanceFromEnd = neighborDistance;
+                    rightCell.HasPathToEnd = true;
                 }
                 if (topCell != null && (topCell.DistanceFromEnd == -1 || topCell.DistanceFromEnd > neighborDistance)/* && !topCell.IsInPath*/)
                 {
                     AddCellToOrderedDistanceLinkedList(cellsToTouch, topCell, neighborDistance);
                     topCell.DistanceFromEnd = neighborDistance;
+                    topCell.HasPathToEnd = true;
                 }
                 if (bottomCell != null && (bottomCell.DistanceFromEnd == -1 || bottomCell.DistanceFromEnd > neighborDistance)/* && !bottomCell.IsInPath*/)
                 {
                     AddCellToOrderedDistanceLinkedList(cellsToTouch, bottomCell, neighborDistance);
                     bottomCell.DistanceFromEnd = neighborDistance;
+                    bottomCell.HasPathToEnd = true;
                 }
             }
         }
@@ -92,10 +98,198 @@ namespace Test.MazeCreation
             linkedList.AddLast(cell);
         }
 
-        private void UpdatedCellAsPath(Cell cell)
-        {
-            //Update every cell around this cell
+        private void CreateMainPathThroughMaze() {
+            //Start at the start, choose a random cell if it has a distance number and not in a path
+            var currentCell = startCell;
+            currentCell.IsInPath = true;
+            currentCell.DistanceFromEnd = -1;
+            currentCell.HasPathToEnd = false;
+            var availableDirections = new List<int>(4);
+            var invalidateCells = new List<Cell>();
 
+            while (currentCell != endCell) {
+                //Construct a list of available cells
+                var leftCell = currentCell.LeftCell;
+                if (leftCell != null && !leftCell.IsInPath && leftCell.HasPathToEnd) {
+                    availableDirections.Add(1);
+                }
+                var rightCell = currentCell.RightCell;
+                if (rightCell != null && !rightCell.IsInPath && rightCell.HasPathToEnd)
+                {
+                    availableDirections.Add(2);
+                }
+                var topCell = currentCell.TopCell;
+                if (topCell != null && !topCell.IsInPath && topCell.HasPathToEnd)
+                {
+                    availableDirections.Add(3);
+                }
+                var bottomCell = currentCell.BottomCell;
+                if (bottomCell != null && !bottomCell.IsInPath && bottomCell.HasPathToEnd)
+                {
+                    availableDirections.Add(4);
+                }
+                if (availableDirections.Count == 0) {
+                    break;
+                }
+                //Move a random direction in the available cells
+                var chosenDirection = availableDirections[random.Next(availableDirections.Count)];
+                availableDirections.Clear();
+                Cell chosenCell = null;
+                if (chosenDirection == 1) {
+                    chosenCell = leftCell;
+                    currentCell.LeftWall.KnockedDown = true;
+                }
+                if (chosenDirection == 2)
+                {
+                    chosenCell = rightCell;
+                    currentCell.RightWall.KnockedDown = true;
+                }
+                if (chosenDirection == 3)
+                {
+                    chosenCell = topCell;
+                    currentCell.TopWall.KnockedDown = true;
+                }
+                if (chosenDirection == 4)
+                {
+                    chosenCell = bottomCell;
+                    currentCell.BottomWall.KnockedDown = true;
+                }
+                currentCell = chosenCell;
+                chosenCell.IsInPath = true;
+                chosenCell.DistanceFromEnd = -1;
+                chosenCell.HasPathToEnd = false;
+                //Invalidate all cells that this cell flows into. Neighbors where the distance is greater
+                //Invalidate cells in order
+                var invalidCellsToCheckList = new LinkedList<Cell>();
+                //Check left
+                if (chosenCell.LeftCell != null && !chosenCell.LeftCell.IsInPath && chosenCell.LeftCell.HasPathToEnd && chosenCell.LeftCell.DistanceFromEnd > chosenCell.DistanceFromEnd) {
+                    AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, chosenCell.LeftCell, chosenCell.LeftCell.DistanceFromEnd);
+                    //Temporarily mark as no path to end
+                    chosenCell.LeftCell.IsInPath = true;
+                }
+                //Check right
+                if (chosenCell.RightCell != null && !chosenCell.RightCell.IsInPath && chosenCell.RightCell.HasPathToEnd && chosenCell.RightCell.DistanceFromEnd > chosenCell.DistanceFromEnd)
+                {
+                    AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, chosenCell.RightCell, chosenCell.RightCell.DistanceFromEnd);
+                    //Temporarily mark as no path to end
+                    chosenCell.RightCell.IsInPath = true;
+                }
+                //Check top
+                if (chosenCell.TopCell != null && !chosenCell.TopCell.IsInPath && chosenCell.TopCell.HasPathToEnd && chosenCell.TopCell.DistanceFromEnd > chosenCell.DistanceFromEnd)
+                {
+                    AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, chosenCell.TopCell, chosenCell.TopCell.DistanceFromEnd);
+                    //Temporarily mark that the cell is in path
+                    chosenCell.TopCell.IsInPath = true;
+                }
+                //Check bottom
+                if (chosenCell.BottomCell != null && !chosenCell.BottomCell.IsInPath && chosenCell.BottomCell.HasPathToEnd && chosenCell.BottomCell.DistanceFromEnd > chosenCell.DistanceFromEnd)
+                {
+                    AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, chosenCell.BottomCell, chosenCell.BottomCell.DistanceFromEnd);
+                    //Temporarily mark as no path to end
+                    chosenCell.BottomCell.IsInPath = true;
+                }
+                var invalidCells = new List<Cell>();
+                //Check all possible invalid cells
+                while (invalidCellsToCheckList.Count > 0) {
+                    var cell = invalidCellsToCheckList.First.Value;
+                    invalidCellsToCheckList.RemoveFirst();
+                    //Re-add that the cell is not in the path, because we temporarily set it to avoid duplicates
+                    cell.IsInPath = false;
+
+                    var cellHasLowerDistancePathLeadingIntoIt = false;
+                    //Check left
+                    if (cell.LeftCell != null && !cell.LeftCell.IsInPath && cell.LeftCell.HasPathToEnd && cell.LeftCell.DistanceFromEnd < cell.DistanceFromEnd)
+                    {
+                        cellHasLowerDistancePathLeadingIntoIt = true;
+                    }
+                    //Check right
+                    if (cell.RightCell != null && !cell.RightCell.IsInPath && cell.RightCell.HasPathToEnd && cell.RightCell.DistanceFromEnd < cell.DistanceFromEnd)
+                    {
+                        cellHasLowerDistancePathLeadingIntoIt = true;
+                    }
+                    //Check top
+                    if (cell.TopCell != null && !cell.TopCell.IsInPath && cell.TopCell.HasPathToEnd && cell.TopCell.DistanceFromEnd < cell.DistanceFromEnd)
+                    {
+                        cellHasLowerDistancePathLeadingIntoIt = true;
+                    }
+                    //Check bottom
+                    if (cell.BottomCell != null && !cell.BottomCell.IsInPath && cell.BottomCell.HasPathToEnd && cell.BottomCell.DistanceFromEnd < cell.DistanceFromEnd)
+                    {
+                        cellHasLowerDistancePathLeadingIntoIt = true;
+                    }
+                    //Do nothing if cell has a lower distance leading into it
+                    if (!cellHasLowerDistancePathLeadingIntoIt) {
+                        //Mark the cell as Doesn't HavePathToEnd
+                        invalidCells.Add(cell);
+                        cell.HasPathToEnd = false;
+                        cell.DistanceFromEnd = -1;
+                        //Add cell neighbors to the invalid check list
+                        //Check left
+                        if (cell.LeftCell != null && !cell.LeftCell.IsInPath && cell.LeftCell.HasPathToEnd && cell.LeftCell.DistanceFromEnd > cell.DistanceFromEnd)
+                        {
+                            AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, cell.LeftCell, cell.LeftCell.DistanceFromEnd);
+                            //Temporarily mark as no path to end
+                            cell.LeftCell.IsInPath = true;
+                        }
+                        //Check right
+                        if (cell.RightCell != null && !cell.RightCell.IsInPath && cell.RightCell.HasPathToEnd && cell.RightCell.DistanceFromEnd > cell.DistanceFromEnd)
+                        {
+                            AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, cell.RightCell, cell.RightCell.DistanceFromEnd);
+                            //Temporarily mark as no path to end
+                            cell.RightCell.IsInPath = true;
+                        }
+                        //Check top
+                        if (cell.TopCell != null && !cell.TopCell.IsInPath && cell.TopCell.HasPathToEnd && cell.TopCell.DistanceFromEnd > cell.DistanceFromEnd)
+                        {
+                            AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, cell.TopCell, cell.TopCell.DistanceFromEnd);
+                            //Temporarily mark that the cell is in path
+                            cell.TopCell.IsInPath = true;
+                        }
+                        //Check bottom
+                        if (cell.BottomCell != null && !cell.BottomCell.IsInPath && cell.BottomCell.HasPathToEnd && cell.BottomCell.DistanceFromEnd > cell.DistanceFromEnd)
+                        {
+                            AddCellToOrderedDistanceLinkedList(invalidCellsToCheckList, cell.BottomCell, cell.BottomCell.DistanceFromEnd);
+                            //Temporarily mark as no path to end
+                            cell.BottomCell.IsInPath = true;
+                        }
+                    }
+                }
+                //Now we have a list of invalid cells
+                //We need to flow the path through them
+                bool changesToInvalidCells = true;
+                while (changesToInvalidCells) {
+                    changesToInvalidCells = false;
+                    for (var index = 0; index < invalidCells.Count; index++) {
+                        var cell = invalidCells[index];
+                        var smallestDistance = int.MaxValue;
+                        if (cell.LeftCell != null && !cell.LeftCell.IsInPath && cell.LeftCell.HasPathToEnd)
+                        {
+                            smallestDistance = Math.Min(smallestDistance, cell.LeftCell.DistanceFromEnd);
+                        }
+                        if (cell.RightCell != null && !cell.RightCell.IsInPath && cell.RightCell.HasPathToEnd)
+                        {
+                            smallestDistance = Math.Min(smallestDistance, cell.RightCell.DistanceFromEnd);
+                        }
+                        if (cell.TopCell != null && !cell.TopCell.IsInPath && cell.TopCell.HasPathToEnd)
+                        {
+                            smallestDistance = Math.Min(smallestDistance, cell.TopCell.DistanceFromEnd);
+                        }
+                        if (cell.BottomCell != null && !cell.BottomCell.IsInPath && cell.BottomCell.HasPathToEnd)
+                        {
+                            smallestDistance = Math.Min(smallestDistance, cell.BottomCell.DistanceFromEnd);
+                        }
+                        if (smallestDistance != int.MaxValue && (smallestDistance < cell.DistanceFromEnd || cell.DistanceFromEnd == -1)) {
+                            cell.DistanceFromEnd = int.MaxValue;
+                            cell.HasPathToEnd = true;
+                            //Move cell to end, reloop
+                            invalidCells.RemoveAt(0);
+                            invalidCells.Add(cell);
+                            changesToInvalidCells = true;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         /*
