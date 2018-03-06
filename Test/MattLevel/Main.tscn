@@ -5,7 +5,7 @@
 [ext_resource path="res://MattLevel/improved_player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Flag.tscn" type="PackedScene" id=4]
 
-[node name="Spatial" type="Spatial" index="0"]
+[node name="Spatial" type="Spatial"]
 
 [node name="Scene Root" parent="." index="0" instance=ExtResource( 1 )]
 

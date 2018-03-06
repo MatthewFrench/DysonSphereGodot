@@ -88,6 +88,9 @@ namespace Test.MazeCreation
             LinkedListNode<Cell> currentLink = linkedList.First;
             while (currentLink != null)
             {
+                if (cell == currentLink.Value) {
+                    return;
+                }
                 if (currentLink.Value.DistanceFromEnd > distance)
                 {
                     linkedList.AddBefore(currentLink, cell);
@@ -264,22 +267,22 @@ namespace Test.MazeCreation
                         var smallestDistance = int.MaxValue;
                         if (cell.LeftCell != null && !cell.LeftCell.IsInPath && cell.LeftCell.HasPathToEnd)
                         {
-                            smallestDistance = Math.Min(smallestDistance, cell.LeftCell.DistanceFromEnd);
+                            smallestDistance = Math.Min(smallestDistance, cell.LeftCell.DistanceFromEnd + 1);
                         }
                         if (cell.RightCell != null && !cell.RightCell.IsInPath && cell.RightCell.HasPathToEnd)
                         {
-                            smallestDistance = Math.Min(smallestDistance, cell.RightCell.DistanceFromEnd);
+                            smallestDistance = Math.Min(smallestDistance, cell.RightCell.DistanceFromEnd + 1);
                         }
                         if (cell.TopCell != null && !cell.TopCell.IsInPath && cell.TopCell.HasPathToEnd)
                         {
-                            smallestDistance = Math.Min(smallestDistance, cell.TopCell.DistanceFromEnd);
+                            smallestDistance = Math.Min(smallestDistance, cell.TopCell.DistanceFromEnd + 1);
                         }
                         if (cell.BottomCell != null && !cell.BottomCell.IsInPath && cell.BottomCell.HasPathToEnd)
                         {
-                            smallestDistance = Math.Min(smallestDistance, cell.BottomCell.DistanceFromEnd);
+                            smallestDistance = Math.Min(smallestDistance, cell.BottomCell.DistanceFromEnd + 1);
                         }
                         if (smallestDistance != int.MaxValue && (smallestDistance < cell.DistanceFromEnd || cell.DistanceFromEnd == -1)) {
-                            cell.DistanceFromEnd = int.MaxValue;
+                            cell.DistanceFromEnd = smallestDistance;
                             cell.HasPathToEnd = true;
                             //Move cell to end, reloop
                             invalidCells.RemoveAt(0);

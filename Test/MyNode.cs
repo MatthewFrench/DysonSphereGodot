@@ -13,14 +13,14 @@ public class MyNode : Node
         GD.Print("Hello from the Node CS Script Init");
 
         //Define sphere properties
-        float radius = 151;
+        float radius = 95;
         float scale = radius;
-        int subdivisionCount = 5;
+        int subdivisionCount = 3;
 
         //h is used for creating full size tiles
         Hexasphere h = new Hexasphere((decimal)radius, subdivisionCount, 1);
         //h2 is for creating the line mesh
-        Hexasphere h2 = new Hexasphere((decimal)(radius*0.99), subdivisionCount, 1);
+        Hexasphere h2 = new Hexasphere((decimal)radius, subdivisionCount, 1);
 
         GD.Print("Number of Tiles: " + h.GetTiles().Count);
         //Load the instances to put in the scene
@@ -28,8 +28,8 @@ public class MyNode : Node
         var sphereMeshScene = (PackedScene)ResourceLoader.Load("res://SphereMesh.tscn");
         var greenSphereMeshScene = (PackedScene)ResourceLoader.Load("res://GreenSphereMesh.tscn");
         var redSphereMeshScene = (PackedScene)ResourceLoader.Load("res://RedSphereMesh.tscn");
-        var hexagonTestScene = (PackedScene)ResourceLoader.Load("res://MattLevel/Hexagon.tscn");
-        var pentagonTestScene = (PackedScene)ResourceLoader.Load("res://MattLevel/Main.tscn"); //Pentagon, Main
+        var hexagonTestScene = (PackedScene)ResourceLoader.Load("res://MattLevel/Main.tscn"); //Hexagon
+        var pentagonTestScene = (PackedScene)ResourceLoader.Load("res://MattLevel/Pentagon.tscn"); //Pentagon, Main
         var numberOfTiles = h.GetTiles().Count;
         //Create all the tiles
         foreach (var tile in h.GetTiles()) {
@@ -133,6 +133,7 @@ public class MyNode : Node
             var angle = angleCalcFirstPoint.AngleTo(angleCalcOriginalPoint);
             var angle2 = new Vector2(localGeneratedFirstPoint.x, localGeneratedFirstPoint.z).AngleTo(new Vector2(localOriginalFirstPoint.x, localOriginalFirstPoint.z));
 
+
             var axis3 = groundTest.GetTransform().basis.Xform(new Vector3(0, 1, 0));
             if (points.Count == 5) {
                 angle2 += (float)Math.PI / 4;
@@ -140,6 +141,7 @@ public class MyNode : Node
             //angleCalcFirstPoint.
             //Rotate it to match up with other parts of the sphere
             groundTest.Rotate(axis3, angle2);
+
 
 
             var newWorldPoint = groundTest.ToGlobal(localOriginalFirstPoint);
